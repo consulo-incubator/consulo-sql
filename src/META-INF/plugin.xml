@@ -175,7 +175,6 @@
     </project-components>
     <module-components>
         <component><implementation-class>com.dci.intellij.dbn.connection.ModuleConnectionBundle</implementation-class></component>
-        <component><implementation-class>com.dci.intellij.dbn.browser.cache.ModuleBrowserCacheComponent</implementation-class></component>
     </module-components>
 
     <actions>
