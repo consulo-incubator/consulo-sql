@@ -1,5 +1,15 @@
 package com.dci.intellij.dbn.editor.data;
 
+import java.beans.PropertyChangeListener;
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.swing.JComponent;
+
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.common.Constants;
 import com.dci.intellij.dbn.common.action.DBNDataKeys;
 import com.dci.intellij.dbn.common.event.EventManager;
@@ -42,15 +52,7 @@ import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.UserDataHolderBase;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.JComponent;
-import java.beans.PropertyChangeListener;
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.Set;
+import com.intellij.openapi.vfs.VirtualFile;
 
 public class DatasetEditor extends UserDataHolderBase implements FileEditor, FileConnectionMappingProvider, ConnectionStatusListener, TransactionListener {
     private DatabaseEditableObjectFile databaseFile;
@@ -224,7 +226,14 @@ public class DatasetEditor extends UserDataHolderBase implements FileEditor, Fil
         };
     }
 
-    public void dispose() {
+	@Nullable
+	@Override
+	public VirtualFile getVirtualFile()
+	{
+		return null;
+	}
+
+	public void dispose() {
         if (!isDisposed) {
             isDisposed = true;
             EventManager.unsubscribe(this);

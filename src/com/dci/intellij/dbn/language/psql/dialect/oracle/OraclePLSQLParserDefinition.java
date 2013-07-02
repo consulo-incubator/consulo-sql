@@ -1,6 +1,7 @@
 package com.dci.intellij.dbn.language.psql.dialect.oracle;
 
 import com.dci.intellij.dbn.language.psql.PSQLParserDefinition;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lexer.FlexAdapter;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
@@ -14,7 +15,7 @@ public class OraclePLSQLParserDefinition extends PSQLParserDefinition {
     }
 
     @NotNull
-    public Lexer createLexer(Project project) {
+    public Lexer createLexer(Project project, LanguageVersion languageVersion) {
         return new FlexAdapter(new OraclePLSQLParserFlexLexer(getTokenTypes()));
     }
 }

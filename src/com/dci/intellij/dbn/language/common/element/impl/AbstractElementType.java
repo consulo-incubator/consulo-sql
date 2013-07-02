@@ -1,5 +1,10 @@
 package com.dci.intellij.dbn.language.common.element.impl;
 
+import javax.swing.Icon;
+
+import org.jdom.Element;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.code.common.style.formatting.FormattingDefinition;
 import com.dci.intellij.dbn.code.common.style.formatting.FormattingDefinitionFactory;
 import com.dci.intellij.dbn.code.common.style.formatting.IndentDefinition;
@@ -18,11 +23,6 @@ import com.dci.intellij.dbn.language.common.element.util.ElementTypeDefinitionEx
 import com.dci.intellij.dbn.language.common.element.util.ElementTypeLogger;
 import com.dci.intellij.dbn.object.common.DBObjectType;
 import com.intellij.psi.tree.IElementType;
-import org.jdom.Element;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.Icon;
 
 public abstract class AbstractElementType extends IElementType implements ElementType {
     private static final FormattingDefinition STATEMENT_FORMATTING = new FormattingDefinition(null, IndentDefinition.NORMAL, SpacingDefinition.MIN_LINE_BREAK, null);
@@ -43,7 +43,7 @@ public abstract class AbstractElementType extends IElementType implements Elemen
     private ElementTypeLogger logger = new ElementTypeLogger(this);
 
     public AbstractElementType(ElementTypeBundle bundle, ElementType parent, String id, @Nullable String description) {
-        super(id, bundle.getLanguageDialect(), false);
+        super(id, bundle.getLanguageDialect(), null, false);
         this.id = id;
         this.description = description;
         this.bundle = bundle;
@@ -53,7 +53,7 @@ public abstract class AbstractElementType extends IElementType implements Elemen
     }
 
     public AbstractElementType(ElementTypeBundle bundle, ElementType parent, String id, Element def) throws ElementTypeDefinitionException {
-        super(id, bundle.getLanguageDialect(), false);
+        super(id, bundle.getLanguageDialect(), null, false);
         this.id = def.getAttributeValue("id");
         if (!id.equals(this.id)) {
             this.id = id;

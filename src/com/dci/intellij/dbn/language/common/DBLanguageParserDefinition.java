@@ -1,14 +1,15 @@
 package com.dci.intellij.dbn.language.common;
 
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.language.common.element.ElementType;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class DBLanguageParserDefinition implements ParserDefinition {
     private DBLanguageParser parser;
@@ -43,17 +44,17 @@ public abstract class DBLanguageParserDefinition implements ParserDefinition {
     }
 
     @NotNull
-    public TokenSet getWhitespaceTokens() {
+    public TokenSet getWhitespaceTokens(LanguageVersion languageVersion) {
         return parser.getTokenTypes().getSharedTokenTypes().getWhitespaceTokens();
     }
 
     @NotNull
-    public TokenSet getCommentTokens() {
+    public TokenSet getCommentTokens(LanguageVersion languageVersion) {
         return parser.getTokenTypes().getSharedTokenTypes().getCommentTokens();
     }
 
     @NotNull
-    public TokenSet getStringLiteralElements() {
+    public TokenSet getStringLiteralElements(LanguageVersion languageVersion) {
         return parser.getTokenTypes().getSharedTokenTypes().getStringTokens();
     }
 }

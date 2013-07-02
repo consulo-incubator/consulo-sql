@@ -1,5 +1,13 @@
 package com.dci.intellij.dbn.navigation.psi;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.common.dispose.DisposeUtil;
 import com.dci.intellij.dbn.connection.ConnectionHandler;
 import com.dci.intellij.dbn.language.common.psi.EmptySearchScope;
@@ -8,6 +16,7 @@ import com.dci.intellij.dbn.object.common.list.DBObjectList;
 import com.dci.intellij.dbn.vfs.DatabaseConnectionFile;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.project.Project;
@@ -29,13 +38,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.util.IncorrectOperationException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.Icon;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class DBConnectionPsiDirectory implements PsiDirectory, Disposable {
     private DatabaseConnectionFile virtualFile;
@@ -95,7 +97,14 @@ public class DBConnectionPsiDirectory implements PsiDirectory, Disposable {
         return Language.ANY;
     }
 
-    public PsiManager getManager() {
+	@NotNull
+	@Override
+	public LanguageVersion getLanguageVersion()
+	{
+		return Language.UNKNOWN_VERSION;
+	}
+
+	public PsiManager getManager() {
         return PsiManager.getInstance(getProject());
     }
 

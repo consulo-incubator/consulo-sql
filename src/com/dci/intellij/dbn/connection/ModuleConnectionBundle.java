@@ -1,16 +1,15 @@
 package com.dci.intellij.dbn.connection;
 
-import com.dci.intellij.dbn.common.Icons;
-import com.dci.intellij.dbn.common.compatibility.CompatibilityUtil;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleComponent;
-import com.intellij.openapi.module.ModuleType;
-import com.intellij.openapi.options.Configurable;
+import javax.swing.Icon;
+
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-
-import javax.swing.Icon;
+import com.dci.intellij.dbn.common.Icons;
+import com.intellij.icons.AllIcons;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleComponent;
+import com.intellij.openapi.options.Configurable;
 
 public class ModuleConnectionBundle extends ConnectionBundle implements ModuleComponent, Configurable {
 
@@ -29,8 +28,7 @@ public class ModuleConnectionBundle extends ConnectionBundle implements ModuleCo
     }
 
     public Icon getIcon(int flags) {
-        ModuleType moduleType = CompatibilityUtil.getModuleType(module);
-        return module == null ? null : moduleType.getNodeIcon(false);
+        return AllIcons.Nodes.Module;
     }
 
     /***************************************

@@ -1,17 +1,18 @@
 package com.dci.intellij.dbn.language.common;
 
+import java.util.Properties;
+
+import org.jdom.Document;
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.common.options.setting.SettingsUtil;
 import com.dci.intellij.dbn.common.util.CommonUtil;
 import com.dci.intellij.dbn.language.common.element.ElementTypeBundle;
 import com.dci.intellij.dbn.language.common.element.NamedElementType;
 import com.intellij.lang.ASTNode;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiParser;
 import com.intellij.psi.tree.IElementType;
-import org.jdom.Document;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Properties;
 
 public abstract class DBLanguageParser implements PsiParser {
     private DBLanguageDialect languageDialect;
@@ -33,7 +34,7 @@ public abstract class DBLanguageParser implements PsiParser {
     }
 
     @NotNull
-    public ASTNode parse(IElementType rootElementType, PsiBuilder builder) {
+    public ASTNode parse(IElementType rootElementType, PsiBuilder builder, LanguageVersion languageVersion) {
         return parse(rootElementType, builder, defaultParseRootId);
     }
 

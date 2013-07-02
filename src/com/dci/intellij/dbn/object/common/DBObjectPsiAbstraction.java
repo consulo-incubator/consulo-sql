@@ -1,9 +1,13 @@
 package com.dci.intellij.dbn.object.common;
 
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.language.common.psi.EmptySearchScope;
 import com.dci.intellij.dbn.language.sql.SQLLanguage;
 import com.intellij.lang.ASTNode;
 import com.intellij.lang.Language;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
@@ -19,9 +23,6 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.EverythingGlobalScope;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class DBObjectPsiAbstraction implements PsiNamedElement {
     private static PsiFile DUMMY_FILE;
@@ -141,7 +142,14 @@ public abstract class DBObjectPsiAbstraction implements PsiNamedElement {
         return SQLLanguage.INSTANCE;
     }
 
-    public TextRange getTextRange() {
+	@NotNull
+	@Override
+	public LanguageVersion getLanguageVersion()
+	{
+		return Language.UNKNOWN_VERSION;
+	}
+
+	public TextRange getTextRange() {
         return new TextRange(0, getText().length());
     }
 

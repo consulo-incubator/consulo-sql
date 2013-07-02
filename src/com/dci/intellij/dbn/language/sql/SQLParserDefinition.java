@@ -1,13 +1,14 @@
 package com.dci.intellij.dbn.language.sql;
 
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.language.common.DBLanguageParser;
 import com.dci.intellij.dbn.language.common.DBLanguageParserDefinition;
 import com.dci.intellij.dbn.language.common.TokenTypeBundle;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiFile;
-import org.jetbrains.annotations.NotNull;
 
 
 public class SQLParserDefinition extends DBLanguageParserDefinition {
@@ -21,8 +22,8 @@ public class SQLParserDefinition extends DBLanguageParserDefinition {
     }
 
     @NotNull
-    public Lexer createLexer(Project project) {
-        return getDefaultParseDefinition().createLexer(project);
+    public Lexer createLexer(Project project, LanguageVersion languageVersion) {
+        return getDefaultParseDefinition().createLexer(project, languageVersion);
     }
 
     private static DBLanguageParserDefinition getDefaultParseDefinition() {
@@ -30,7 +31,7 @@ public class SQLParserDefinition extends DBLanguageParserDefinition {
     }
 
     @NotNull
-    public DBLanguageParser createParser(Project project) {
+    public DBLanguageParser createParser(Project project, LanguageVersion languageVersion) {
         return getParser();
     }
 
