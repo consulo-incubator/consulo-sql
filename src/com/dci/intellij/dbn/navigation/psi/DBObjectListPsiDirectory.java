@@ -40,6 +40,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.LanguageVersionUtil;
 
 public class DBObjectListPsiDirectory implements PsiDirectory, Disposable {
     private DatabaseObjectListFile virtualFile;
@@ -93,7 +94,7 @@ public class DBObjectListPsiDirectory implements PsiDirectory, Disposable {
 	@Override
 	public LanguageVersion getLanguageVersion()
 	{
-		return Language.UNKNOWN_VERSION;
+		return LanguageVersionUtil.findDefaultVersion(getLanguage());
 	}
 
 	public PsiDirectory getParent() {

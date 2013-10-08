@@ -27,11 +27,11 @@ public class DBLanguageFileElementType extends IFileElementType {
 
         String text = chameleon.getText();
         ParserDefinition parserDefinition = languageDialect.getParserDefinition();
-        Lexer lexer = parserDefinition.createLexer(project, Language.UNKNOWN_VERSION);
+        Lexer lexer = parserDefinition.createLexer(project, getLanguageVersion());
 
-        DBLanguageParser parser = (DBLanguageParser) parserDefinition.createParser(project, Language.UNKNOWN_VERSION);
+        DBLanguageParser parser = (DBLanguageParser) parserDefinition.createParser(project, getLanguageVersion());
 
-        PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, lexer, languageDialect, Language.UNKNOWN_VERSION, text);
+        PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(project, chameleon, lexer, languageDialect, getLanguageVersion(), text);
         ASTNode node = parser.parse(this, builder, file.getParseRootId());
         return node.getFirstChildNode();
     }

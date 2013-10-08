@@ -1,5 +1,9 @@
 package com.dci.intellij.dbn.debugger.execution;
 
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.common.Constants;
 import com.dci.intellij.dbn.common.thread.BackgroundTask;
 import com.dci.intellij.dbn.common.thread.SimpleLaterInvocator;
@@ -24,17 +28,12 @@ import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.execution.runners.GenericProgramRunner;
 import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.history.LocalHistory;
-import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public class DBProgramRunner extends GenericProgramRunner {
     public static final String RUNNER_ID = "DBNavigatorProgramRunner";
@@ -52,34 +51,24 @@ public class DBProgramRunner extends GenericProgramRunner {
         return false;
     }
 
-    @Override
-    protected RunContentDescriptor doExecute(
-            Project project,
-            Executor executor,
-            RunProfileState state,
-            RunContentDescriptor contentToReuse,
-            ExecutionEnvironment environment) throws ExecutionException {
-        return null;
-    }
+	@Override
+	public void execute(@NotNull final ExecutionEnvironment env, @Nullable final Callback callback) throws ExecutionException
+	{
+		final DBProgramRunConfiguration runProfile = (DBProgramRunConfiguration) env.getRunProfile();
 
-    public void execute(
-            @NotNull final Executor executor,
-            @NotNull final ExecutionEnvironment environment,
-            @Nullable final Callback callback) throws ExecutionException {
-        final DBProgramRunConfiguration runProfile = (DBProgramRunConfiguration) environment.getRunProfile();
+		new BackgroundTask(runProfile.getProject(), "Checking debug privileges", false, true) {
+			public void execute(@NotNull ProgressIndicator progressIndicator) {
+				initProgressIndicator(progressIndicator, true);
+				performPrivilegeCheck(
+						runProfile.getExecutionInput(),
+						env.getExecutor(),
+						env,
+						callback);
 
-        new BackgroundTask(runProfile.getProject(), "Checking debug privileges", false, true) {
-            public void execute(@NotNull ProgressIndicator progressIndicator) {
-                initProgressIndicator(progressIndicator, true);
-                performPrivilegeCheck(
-                        runProfile.getExecutionInput(),
-                        executor,
-                        environment,
-                        callback);
+			}
+		}.start();
+	}
 
-            }
-        }.start();
-    }
 
     private void performPrivilegeCheck(
             final MethodExecutionInput executionInput,
@@ -238,8 +227,8 @@ public class DBProgramRunner extends GenericProgramRunner {
                 boolean continueExecution = executionManager.promptExecutionDialog(executionInput, true);
 
                 if (continueExecution) {
-                    DataContext dataContext = environment.getDataContext();
-                    RunContentDescriptor reuseContent = ExecutionManager.getInstance(project).getContentManager().getReuseContent(executor, dataContext);
+
+                    RunContentDescriptor reuseContent = ExecutionManager.getInstance(project).getContentManager().getReuseContent(environment);
                     DBProgramDebugProcessStarter debugProcessStarter = new DBProgramDebugProcessStarter(connectionHandler);
                     XDebugSession session = null;
                     try {
@@ -268,5 +257,12 @@ public class DBProgramRunner extends GenericProgramRunner {
             }
         }.start();
     }
+
+	@Nullable
+	@Override
+	protected RunContentDescriptor doExecute(Project project, RunProfileState runProfileState, RunContentDescriptor runContentDescriptor, ExecutionEnvironment executionEnvironment) throws ExecutionException
+	{
+		return null;
+	}
 }
 

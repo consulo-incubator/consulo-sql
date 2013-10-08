@@ -27,6 +27,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.LanguageVersionUtil;
 
 public class DBObjectPsiFile implements PsiFile, Disposable {
     private DBObject object;
@@ -75,7 +76,7 @@ public class DBObjectPsiFile implements PsiFile, Disposable {
 	@Override
 	public LanguageVersion getLanguageVersion()
 	{
-		return Language.UNKNOWN_VERSION;
+		return LanguageVersionUtil.findDefaultVersion(getLanguage());
 	}
 
 	public PsiDirectory getParent() {

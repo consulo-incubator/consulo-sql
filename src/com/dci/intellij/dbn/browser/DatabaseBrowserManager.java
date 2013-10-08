@@ -1,5 +1,14 @@
 package com.dci.intellij.dbn.browser;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.tree.TreePath;
+
+import org.jdom.Element;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.browser.model.BrowserTreeModel;
 import com.dci.intellij.dbn.browser.model.BrowserTreeNode;
 import com.dci.intellij.dbn.browser.model.TabbedBrowserTreeModel;
@@ -32,17 +41,9 @@ import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
-import org.jdom.Element;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.tree.TreePath;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseBrowserManager extends AbstractProjectComponent implements JDOMExternalizable{
-    public static final String TOOL_WINDOW_ID = "DB Browser";
+    public static final String TOOL_WINDOW_ID = "Data Source";
 
     private BooleanSetting autoscrollFromEditor = new BooleanSetting("autoscroll-from-editor", true);
     private BooleanSetting autoscrollToEditor   = new BooleanSetting("autoscroll-to-editor", false);

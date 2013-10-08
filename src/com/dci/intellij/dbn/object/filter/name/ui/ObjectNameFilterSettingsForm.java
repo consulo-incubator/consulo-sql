@@ -1,5 +1,16 @@
 package com.dci.intellij.dbn.object.filter.name.ui;
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTree;
+import javax.swing.tree.TreePath;
+
+import org.jdom.Element;
 import com.dci.intellij.dbn.common.options.ui.ConfigurationEditorForm;
 import com.dci.intellij.dbn.common.util.ActionUtil;
 import com.dci.intellij.dbn.object.filter.name.FilterCondition;
@@ -14,18 +25,8 @@ import com.dci.intellij.dbn.object.filter.name.action.MoveConditionUpAction;
 import com.dci.intellij.dbn.object.filter.name.action.RemoveConditionAction;
 import com.dci.intellij.dbn.object.filter.name.action.SwitchConditionJoinTypeAction;
 import com.intellij.openapi.actionSystem.ActionToolbar;
-import com.intellij.openapi.actionSystem.Separator;
+import com.intellij.openapi.actionSystem.AnSeparator;
 import com.intellij.openapi.options.ConfigurationException;
-import org.jdom.Element;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JTree;
-import javax.swing.tree.TreePath;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ObjectNameFilterSettingsForm extends ConfigurationEditorForm<ObjectNameFilterSettings> {
     private JPanel mainPanel;
@@ -54,7 +55,7 @@ public class ObjectNameFilterSettingsForm extends ConfigurationEditorForm<Object
                 new AddConditionAction(this),
                 new RemoveConditionAction(this),
                 new SwitchConditionJoinTypeAction(this),
-                new Separator(),
+                new AnSeparator(),
                 new MoveConditionUpAction(this),
                 new MoveConditionDownAction(this));
         actionsPanel.add(actionToolbar.getComponent());

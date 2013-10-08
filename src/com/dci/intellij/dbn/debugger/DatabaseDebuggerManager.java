@@ -1,5 +1,16 @@
 package com.dci.intellij.dbn.debugger;
 
+import gnu.trove.THashSet;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+
+import org.jdom.Element;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.common.AbstractProjectComponent;
 import com.dci.intellij.dbn.common.util.MessageUtil;
 import com.dci.intellij.dbn.common.util.NamingUtil;
@@ -34,12 +45,6 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.util.containers.ContainerUtil;
-import gnu.trove.THashSet;
-import org.jdom.Element;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.*;
 
 public class DatabaseDebuggerManager extends AbstractProjectComponent implements JDOMExternalizable {
     private Set<ConnectionHandler> activeDebugSessions = new THashSet<ConnectionHandler>();
@@ -118,8 +123,8 @@ public class DatabaseDebuggerManager extends AbstractProjectComponent implements
         runManager.setActiveConfiguration((RunnerAndConfigurationSettingsImpl) runConfigurationSetting);
         ProgramRunner programRunner = RunnerRegistry.getInstance().findRunnerById(DBProgramRunner.RUNNER_ID);
         try {
-            ExecutionEnvironment executionEnvironment = new ExecutionEnvironment(programRunner, runConfigurationSetting, dataContext);
-            programRunner.execute(DefaultDebugExecutor.getDebugExecutorInstance(), executionEnvironment);
+            ExecutionEnvironment executionEnvironment = new ExecutionEnvironment(DefaultDebugExecutor.getDebugExecutorInstance(), programRunner, runConfigurationSetting, method.getProject());
+            programRunner.execute(executionEnvironment);
         } catch (ExecutionException e) {
             MessageUtil.showErrorDialog(
                     "Could not start debugger for " + method.getQualifiedName() + ". \n" +

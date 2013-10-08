@@ -1,19 +1,17 @@
 package com.dci.intellij.dbn.language.common.psi;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.code.common.style.formatting.FormattingAttributes;
 import com.dci.intellij.dbn.code.common.style.formatting.FormattingProviderPsiElement;
 import com.dci.intellij.dbn.code.common.style.presets.CodeStylePreset;
-import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.language.common.element.ChameleonElementType;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.formatting.Indent;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.Icon;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ChameleonPsiElement extends ASTWrapperPsiElement implements ExecutableBundlePsiElement, FormattingProviderPsiElement {
     public static final FormattingAttributes FORMATTING_ATTRIBUTES = new FormattingAttributes(null, Indent.getAbsoluteNoneIndent(), CodeStylePreset.SPACING_MIN_ONE_LINE, null);
@@ -47,11 +45,6 @@ public class ChameleonPsiElement extends ASTWrapperPsiElement implements Executa
     @Override
     public String toString() {
         return elementType.getDebugName();
-    }
-
-    @Override
-    public Icon getIcon(int flags) {
-        return Icons.FILE_BLOCK_PSQL; // todo make this dynamic
     }
 
     @Override

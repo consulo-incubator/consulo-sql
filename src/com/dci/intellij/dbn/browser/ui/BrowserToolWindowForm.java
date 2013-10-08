@@ -1,5 +1,10 @@
 package com.dci.intellij.dbn.browser.ui;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JPanel;
+
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.browser.DatabaseBrowserManager;
 import com.dci.intellij.dbn.browser.model.BrowserTreeNode;
 import com.dci.intellij.dbn.browser.options.BrowserDisplayMode;
@@ -8,23 +13,16 @@ import com.dci.intellij.dbn.common.event.EventManager;
 import com.dci.intellij.dbn.common.ui.DBNForm;
 import com.dci.intellij.dbn.common.ui.DBNFormImpl;
 import com.dci.intellij.dbn.common.ui.GUIUtil;
-import com.dci.intellij.dbn.common.util.ActionUtil;
 import com.dci.intellij.dbn.connection.ConnectionHandler;
 import com.dci.intellij.dbn.object.common.DBObject;
 import com.dci.intellij.dbn.object.properties.ui.ObjectPropertiesForm;
 import com.dci.intellij.dbn.options.ProjectSettingsChangeListener;
-import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.GuiUtils;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
 
 public class BrowserToolWindowForm extends DBNFormImpl implements DBNForm {
     private JPanel mainPanel;
-    private JPanel actionsPanel;
-    private JPanel browserPanel;
+	private JPanel browserPanel;
     private JPanel closeActionPanel;
     private JPanel objectPropertiesPanel;
     private DatabaseBrowserForm browserForm;
@@ -41,9 +39,6 @@ public class BrowserToolWindowForm extends DBNFormImpl implements DBNForm {
         displayMode = DatabaseBrowserSettings.getInstance(project).getGeneralSettings().getDisplayMode();
         initBrowserForm();
 
-        ActionToolbar actionToolbar = ActionUtil.createActionToolbar("", true, "DBNavigator.ActionGroup.Browser.Controls");
-
-        actionsPanel.add(actionToolbar.getComponent());
 
         /*ActionToolbar objectPropertiesActionToolbar = ActionUtil.createActionToolbar("", false, "DBNavigator.ActionGroup.Browser.ObjectProperties");
         closeActionPanel.add(objectPropertiesActionToolbar.getComponent(), BorderLayout.CENTER);*/

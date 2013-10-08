@@ -38,6 +38,7 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.util.IncorrectOperationException;
+import com.intellij.util.LanguageVersionUtil;
 
 public class DBConnectionPsiDirectory implements PsiDirectory, Disposable {
     private DatabaseConnectionFile virtualFile;
@@ -101,7 +102,7 @@ public class DBConnectionPsiDirectory implements PsiDirectory, Disposable {
 	@Override
 	public LanguageVersion getLanguageVersion()
 	{
-		return Language.UNKNOWN_VERSION;
+		return LanguageVersionUtil.findDefaultVersion(getLanguage());
 	}
 
 	public PsiManager getManager() {

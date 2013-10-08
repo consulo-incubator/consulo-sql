@@ -23,6 +23,7 @@ import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.EverythingGlobalScope;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.SearchScope;
+import com.intellij.util.LanguageVersionUtil;
 
 public abstract class DBObjectPsiAbstraction implements PsiNamedElement {
     private static PsiFile DUMMY_FILE;
@@ -146,7 +147,7 @@ public abstract class DBObjectPsiAbstraction implements PsiNamedElement {
 	@Override
 	public LanguageVersion getLanguageVersion()
 	{
-		return Language.UNKNOWN_VERSION;
+		return LanguageVersionUtil.findDefaultVersion(getLanguage());
 	}
 
 	public TextRange getTextRange() {
