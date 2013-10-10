@@ -12,10 +12,6 @@ import com.intellij.ui.RowIcon;
 public class Icons {
     private static final Map<String, Icon> REGISTERED_ICONS = new THashMap<String, Icon>();
 
-    public static final Icon DBN_SPLASH = load("/img/DBN.png");
-    public static final Icon DONATE = load("/img/Donate.png");
-    public static final Icon DONATE_DISABLED = load("/img/DonateDisabled.png");
-
     public static final Icon COMMON_INFO = load("/img/v1/common/Info.png");
     public static final Icon COMMON_INFO_DISABLED = load("/img/v1/common/InfoDisabled.png");
     public static final Icon COMMON_WARNING = load("/img/v1/common/WarningTriangle.png");
