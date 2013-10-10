@@ -1,12 +1,12 @@
 package com.dci.intellij.dbn.language.psql;
 
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.editor.DBContentType;
 import com.dci.intellij.dbn.language.common.DBLanguageFileType;
 import com.intellij.lang.Language;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.Icon;
 
 public class PSQLFileType extends DBLanguageFileType {
 
