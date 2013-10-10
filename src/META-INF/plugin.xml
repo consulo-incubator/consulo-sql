@@ -1,6 +1,6 @@
 <idea-plugin version="2" url="http://www.jetbrains.net/confluence/display/CONTEST/Database+Navigator">
+	<id>org.consulo.sql</id>
 	<name>Database Navigator</name>
-	<id>DBN</id>
 	<!--2250-->
 	<version>3.0.2601</version>
 	<category>Database</category>
