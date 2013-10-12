@@ -1,5 +1,13 @@
 package com.dci.intellij.dbn.editor.data.filter.ui;
 
+import java.awt.BorderLayout;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
+
 import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.common.compatibility.CompatibilityUtil;
 import com.dci.intellij.dbn.common.options.ui.ConfigurationEditorForm;
@@ -18,13 +26,6 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFileFactory;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
-import java.awt.BorderLayout;
 
 public class DatasetCustomFilterForm extends ConfigurationEditorForm<DatasetCustomFilter> {
     private JPanel mainPanel;
@@ -57,6 +58,7 @@ public class DatasetCustomFilterForm extends ConfigurationEditorForm<DatasetCust
         SQLFile selectStatementFile = (SQLFile)
                 psiFileFactory.createFileFromText(
                     "filter.sql",
+					SQLLanguage.INSTANCE,
                     dataset.getLanguageDialect(SQLLanguage.INSTANCE),
                     selectStatement.toString());
         selectStatementFile.setParseRootId("subquery");

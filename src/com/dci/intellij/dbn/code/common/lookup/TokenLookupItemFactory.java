@@ -7,7 +7,7 @@ import com.dci.intellij.dbn.code.common.completion.CodeCompletionLookupConsumer;
 import com.dci.intellij.dbn.code.common.style.DBLCodeStyleManager;
 import com.dci.intellij.dbn.code.common.style.options.CodeStyleCaseOption;
 import com.dci.intellij.dbn.code.common.style.options.CodeStyleCaseSettings;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.language.common.TokenType;
 import com.dci.intellij.dbn.language.common.element.TokenElementType;
 import com.intellij.codeInsight.completion.CompletionResultSet;
@@ -38,7 +38,7 @@ public class TokenLookupItemFactory extends LookupItemFactory {
         TokenType tokenType = tokenElementType.getTokenType();
         String text = tokenType.getValue();
 
-        DBLanguage language = tokenElementType.getLanguage();
+        SqlLikeLanguage language = tokenElementType.getLanguage();
         CodeStyleCaseSettings styleCaseSettings = DBLCodeStyleManager.getInstance(project).getCodeStyleCaseSettings(language);
         CodeStyleCaseOption caseOption =
                 tokenType.isFunction() ? styleCaseSettings.getFunctionCaseOption() :

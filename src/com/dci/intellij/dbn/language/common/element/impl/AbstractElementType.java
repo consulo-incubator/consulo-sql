@@ -11,8 +11,8 @@ import com.dci.intellij.dbn.code.common.style.formatting.IndentDefinition;
 import com.dci.intellij.dbn.code.common.style.formatting.SpacingDefinition;
 import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.common.util.StringUtil;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 import com.dci.intellij.dbn.language.common.element.ElementType;
 import com.dci.intellij.dbn.language.common.element.ElementTypeBundle;
 import com.dci.intellij.dbn.language.common.element.lookup.ElementTypeLookupCache;
@@ -43,7 +43,7 @@ public abstract class AbstractElementType extends IElementType implements Elemen
     private ElementTypeLogger logger = new ElementTypeLogger(this);
 
     public AbstractElementType(ElementTypeBundle bundle, ElementType parent, String id, @Nullable String description) {
-        super(id, bundle.getLanguageDialect(), null, false);
+        super(id, bundle.getLanguage(), bundle.getLanguageVersion(), false);
         this.id = id;
         this.description = description;
         this.bundle = bundle;
@@ -53,7 +53,7 @@ public abstract class AbstractElementType extends IElementType implements Elemen
     }
 
     public AbstractElementType(ElementTypeBundle bundle, ElementType parent, String id, Element def) throws ElementTypeDefinitionException {
-        super(id, bundle.getLanguageDialect(), null, false);
+        super(id, bundle.getLanguage(), bundle.getLanguageVersion(), false);
         this.id = def.getAttributeValue("id");
         if (!id.equals(this.id)) {
             this.id = id;
@@ -140,13 +140,13 @@ public abstract class AbstractElementType extends IElementType implements Elemen
     }
 
     @NotNull
-    public DBLanguage getLanguage() {
-        return getLanguageDialect().getBaseLanguage();
+    public SqlLikeLanguage getLanguage() {
+        return (SqlLikeLanguage) super.getLanguage();
     }
 
     @Override
-    public DBLanguageDialect getLanguageDialect() {
-        return (DBLanguageDialect) super.getLanguage();
+    public SqlLikeLanguageVersion<? extends SqlLikeLanguage> getLanguageVersion() {
+        return (SqlLikeLanguageVersion<? extends SqlLikeLanguage>) super.getLanguageVersion();
     }
 
     public ElementTypeBundle getElementBundle() {

@@ -2,7 +2,7 @@ package com.dci.intellij.dbn.object.common;
 
 import com.dci.intellij.dbn.ddl.DDLFileType;
 import com.dci.intellij.dbn.editor.DBContentType;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.object.common.loader.DBObjectTimestampLoader;
 import com.dci.intellij.dbn.object.common.status.DBObjectStatusHolder;
 import com.dci.intellij.dbn.vfs.DatabaseEditableObjectFile;
@@ -22,7 +22,7 @@ public interface DBSchemaObject extends DBObject {
     DBObjectTimestampLoader getTimestampLoader(DBContentType contentType);
 
     String loadCodeFromDatabase(DBContentType contentType) throws SQLException;
-    DBLanguage getCodeLanguage(DBContentType contentType);
+    SqlLikeLanguage getCodeLanguage(DBContentType contentType);
     String getCodeParseRootId(DBContentType contentType);
 
     void executeUpdateDDL(DBContentType contentType, String oldCode, String newCode) throws SQLException;

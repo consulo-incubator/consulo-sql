@@ -1,23 +1,21 @@
 package com.dci.intellij.dbn.database.common;
 
 import com.dci.intellij.dbn.database.DatabaseInterfaceProvider;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 import com.dci.intellij.dbn.language.psql.PSQLLanguage;
-import com.dci.intellij.dbn.language.psql.dialect.PSQLLanguageDialect;
 import com.dci.intellij.dbn.language.sql.SQLLanguage;
-import com.dci.intellij.dbn.language.sql.dialect.SQLLanguageDialect;
 
 public abstract class DatabaseInterfaceProviderImpl implements DatabaseInterfaceProvider {
-    private SQLLanguageDialect sqlLanguageDialect;
-    private PSQLLanguageDialect psqlLanguageDialect;
+    private SqlLikeLanguageVersion<SQLLanguage> sqlLanguageDialect;
+    private SqlLikeLanguageVersion<PSQLLanguage> psqlLanguageDialect;
 
-    protected DatabaseInterfaceProviderImpl(SQLLanguageDialect sqlLanguageDialect, PSQLLanguageDialect psqlLanguageDialect) {
-        this.sqlLanguageDialect = sqlLanguageDialect;
-        this.psqlLanguageDialect = psqlLanguageDialect;
+    protected DatabaseInterfaceProviderImpl(Class<? extends SqlLikeLanguageVersion<SQLLanguage>> csql, Class<? extends SqlLikeLanguageVersion<PSQLLanguage>> psql) {
+        this.sqlLanguageDialect = csql == null ? null : SQLLanguage.INSTANCE.findVersionByClass(csql);
+        this.psqlLanguageDialect = psql == null ? null : PSQLLanguage.INSTANCE.findVersionByClass(psql);
     }
 
-    public DBLanguageDialect getLanguageDialect(DBLanguage language) {
+    public SqlLikeLanguageVersion<? extends SqlLikeLanguage> getLanguageDialect(SqlLikeLanguage language) {
         if (language == SQLLanguage.INSTANCE) return sqlLanguageDialect;
         if (language == PSQLLanguage.INSTANCE) return psqlLanguageDialect;
         return null;

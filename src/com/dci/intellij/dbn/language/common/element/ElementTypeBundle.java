@@ -1,28 +1,7 @@
 package com.dci.intellij.dbn.language.common.element;
 
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
-import com.dci.intellij.dbn.language.common.TokenTypeBundle;
-import com.dci.intellij.dbn.language.common.element.impl.BlockElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.ExecVariableElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.IdentifierElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.IterationElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.NamedElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.OneOfElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.QualifiedIdentifierElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.SequenceElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.TokenElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.UnknownElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.impl.WrapperElementTypeImpl;
-import com.dci.intellij.dbn.language.common.element.util.ElementTypeAttribute;
-import com.dci.intellij.dbn.language.common.element.util.ElementTypeDefinition;
-import com.dci.intellij.dbn.language.common.element.util.ElementTypeDefinitionException;
-import com.dci.intellij.dbn.object.common.DBObjectType;
-import com.intellij.openapi.diagnostic.Logger;
 import gnu.trove.THashMap;
 import gnu.trove.THashSet;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -32,9 +11,24 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
+import com.dci.intellij.dbn.language.common.TokenTypeBundle;
+import com.dci.intellij.dbn.language.common.element.impl.*;
+import com.dci.intellij.dbn.language.common.element.util.ElementTypeAttribute;
+import com.dci.intellij.dbn.language.common.element.util.ElementTypeDefinition;
+import com.dci.intellij.dbn.language.common.element.util.ElementTypeDefinitionException;
+import com.dci.intellij.dbn.object.common.DBObjectType;
+import com.intellij.openapi.diagnostic.Logger;
+
 public class ElementTypeBundle {
     private final Logger log = Logger.getInstance(getClass().getName());
-    private TokenTypeBundle tokenTypeBundle;
+	private final SqlLikeLanguage language;
+	private final SqlLikeLanguageVersion<? extends SqlLikeLanguage> languageVersion;
+	private TokenTypeBundle tokenTypeBundle;
     private UnknownElementType unknownElementType;
     private NamedElementType rootElementType;
 
@@ -44,7 +38,7 @@ public class ElementTypeBundle {
     private Set<OneOfElementType> oneOfElementTypes = new THashSet<OneOfElementType>();
     private final Map<String, NamedElementType> namedElementTypes = new THashMap<String, NamedElementType>();
     private final Set<ElementType> virtualObjectElementTypes = new THashSet<ElementType>();
-    private final DBLanguageDialect languageDialect;
+
     private boolean rewriteIndexes;
 
     /** @deprecated */
@@ -52,8 +46,9 @@ public class ElementTypeBundle {
 
     private int idCursor;
 
-    public ElementTypeBundle(DBLanguageDialect languageDialect, TokenTypeBundle tokenTypeBundle, Document elementTypesDef, Properties lookupCacheIndex) {
-        this.languageDialect = languageDialect;
+    public ElementTypeBundle(SqlLikeLanguage language, SqlLikeLanguageVersion<? extends SqlLikeLanguage> languageVersion, TokenTypeBundle tokenTypeBundle, Document elementTypesDef, Properties lookupCacheIndex) {
+        this.language = language;
+		this.languageVersion = languageVersion;
         this.tokenTypeBundle = tokenTypeBundle;
         this.lookupCacheIndex = lookupCacheIndex;
         try {
@@ -68,7 +63,7 @@ public class ElementTypeBundle {
                 if (!namedElementType.isDefinitionLoaded()) {
                     namedElementType.update(unknown);
                     //log.info("ERROR: element '" + namedElementType.getId() + "' not defined.");
-                    System.out.println("DEBUG - [" + getLanguageDialect().getID() + "] undefined element type: " + namedElementType.getId());
+                    System.out.println("DEBUG - [" + languageVersion + "] undefined element type: " + namedElementType.getId());
 /*
                     if (DatabaseNavigator.getInstance().isDebugModeEnabled()) {
                         System.out.println("WARNING - [" + getLanguageDialect().getID() + "] undefined element type: " + namedElementType.getId());
@@ -236,10 +231,6 @@ public class ElementTypeBundle {
         return elementType;
     }
 
-    public DBLanguageDialect getLanguageDialect() {
-        return languageDialect;
-    }
-
     public NamedElementType getRootElementType() {
         return rootElementType;
     }
@@ -264,4 +255,14 @@ public class ElementTypeBundle {
         buffer.append(id);
         return buffer.toString();
     }
+
+	public SqlLikeLanguage getLanguage()
+	{
+		return language;
+	}
+
+	public SqlLikeLanguageVersion<? extends SqlLikeLanguage> getLanguageVersion()
+	{
+		return languageVersion;
+	}
 }

@@ -1,45 +1,26 @@
 package com.dci.intellij.dbn.language.sql;
 
 import org.jetbrains.annotations.NotNull;
-import com.dci.intellij.dbn.language.common.DBLanguageParser;
-import com.dci.intellij.dbn.language.common.DBLanguageParserDefinition;
-import com.dci.intellij.dbn.language.common.TokenTypeBundle;
-import com.intellij.lang.LanguageVersion;
-import com.intellij.lexer.Lexer;
-import com.intellij.openapi.project.Project;
+import com.dci.intellij.dbn.language.common.SqlLikeParserDefinition;
 import com.intellij.psi.FileViewProvider;
 import com.intellij.psi.PsiFile;
+import com.intellij.psi.tree.IFileElementType;
 
 
-public class SQLParserDefinition extends DBLanguageParserDefinition {
+public final class SQLParserDefinition extends SqlLikeParserDefinition
+{
+	private static final SQLFileElementType FILE_TYPE = new SQLFileElementType(SQLLanguage.INSTANCE);
 
-    public SQLParserDefinition() {
-        this((SQLParser) getDefaultParseDefinition().getParser());
-    }
+	@NotNull
+	@Override
+	public IFileElementType getFileNodeType()
+	{
+		return FILE_TYPE;
+	}
 
-    public SQLParserDefinition(SQLParser parser) {
-        super(parser);
-    }
-
-    @NotNull
-    public Lexer createLexer(Project project, LanguageVersion languageVersion) {
-        return getDefaultParseDefinition().createLexer(project, languageVersion);
-    }
-
-    private static DBLanguageParserDefinition getDefaultParseDefinition() {
-        return SQLLanguage.INSTANCE.getMainLanguageDialect().getParserDefinition();
-    }
-
-    @NotNull
-    public DBLanguageParser createParser(Project project, LanguageVersion languageVersion) {
-        return getParser();
-    }
-
-    public TokenTypeBundle getTokenTypes() {
-        return getParser().getTokenTypes();
-    }
-
-    public PsiFile createFile(FileViewProvider viewProvider) {
-        return new SQLFile(viewProvider, SQLLanguage.INSTANCE);
-    }
+	@Override
+	public PsiFile createFile(FileViewProvider viewProvider)
+	{
+		return new SQLFile(viewProvider);
+	}
 }

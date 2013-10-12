@@ -1,5 +1,7 @@
 package com.dci.intellij.dbn.language.common;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.common.compatibility.CompatibilityUtil;
 import com.dci.intellij.dbn.common.util.DocumentUtil;
 import com.dci.intellij.dbn.common.util.EditorUtil;
@@ -12,13 +14,12 @@ import com.dci.intellij.dbn.language.common.psi.NamedPsiElement;
 import com.dci.intellij.dbn.navigation.psi.NavigationPsiCache;
 import com.dci.intellij.dbn.object.DBSchema;
 import com.dci.intellij.dbn.object.common.DBObject;
-import com.dci.intellij.dbn.vfs.DatabaseContentFile;
 import com.dci.intellij.dbn.vfs.DatabaseFile;
 import com.dci.intellij.dbn.vfs.DatabaseFileSystem;
 import com.dci.intellij.dbn.vfs.DatabaseObjectFile;
 import com.dci.intellij.dbn.vfs.SourceCodeFile;
+import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.ide.util.EditSourceUtil;
-import com.intellij.lang.Language;
 import com.intellij.lang.LanguageParserDefinitions;
 import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.editor.Document;
@@ -33,18 +34,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.SingleRootFileViewProvider;
-import com.intellij.psi.impl.source.PsiFileImpl;
-import com.intellij.psi.tree.IFileElementType;
 import com.intellij.testFramework.LightVirtualFile;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Set;
-
-public abstract class DBLanguageFile extends PsiFileImpl implements FileConnectionMappingProvider {
-    private Language language;
+public abstract class DBLanguageFile extends PsiFileBase implements FileConnectionMappingProvider {
     private DBLanguageFileType fileType;
     private ParserDefinition parserDefinition;
     private String parseRootId;
@@ -52,10 +44,9 @@ public abstract class DBLanguageFile extends PsiFileImpl implements FileConnecti
     private DBSchema currentSchema;
     private DBObject underlyingObject;
 
-    public DBLanguageFile(FileViewProvider viewProvider, DBLanguageFileType fileType, DBLanguage language) {
-        super(viewProvider);
-        this.language = findLanguage(language);
-        this.fileType = fileType;
+    public DBLanguageFile(FileViewProvider viewProvider, DBLanguageFileType fileType, SqlLikeLanguage language) {
+        super(viewProvider, language);
+
         parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
         if (parserDefinition == null) {
             throw new RuntimeException("PsiFileBase: language.getParserDefinition() returned null.");
@@ -67,10 +58,6 @@ public abstract class DBLanguageFile extends PsiFileImpl implements FileConnecti
         }
 
         parseRootId = CompatibilityUtil.getParseRootId(virtualFile);
-
-        IFileElementType nodeType = parserDefinition.getFileNodeType();
-        //assert nodeType.getLanguage() == this.language;
-        init(nodeType, nodeType);
     }
 
     public void setUnderlyingObject(DBObject underlyingObject) {
@@ -92,24 +79,12 @@ public abstract class DBLanguageFile extends PsiFileImpl implements FileConnecti
         return underlyingObject;
     }
 
-    public DBLanguageFile(Project project,  DBLanguageFileType fileType, @NotNull DBLanguage language) {
+    public DBLanguageFile(Project project,  DBLanguageFileType fileType, @NotNull SqlLikeLanguage language) {
         this(createFileViewProvider(project), fileType, language);
     }
 
     private static SingleRootFileViewProvider createFileViewProvider(Project project) {
         return new SingleRootFileViewProvider(PsiManager.getInstance(project), new LightVirtualFile());
-    }
-
-    private Language findLanguage(Language baseLanguage) {
-        final FileViewProvider viewProvider = getViewProvider();
-        final Set<Language> languages = viewProvider.getLanguages();
-        for (final Language actualLanguage : languages) {
-            if (actualLanguage.isKindOf(baseLanguage)) {
-                return actualLanguage;
-            }
-        }
-        throw new AssertionError(
-                "Language " + baseLanguage + " doesn't participate in view provider " + viewProvider + ": " + new ArrayList<Language>(languages));
     }
 
     public void setParseRootId(String parseRootId) {
@@ -123,35 +98,6 @@ public abstract class DBLanguageFile extends PsiFileImpl implements FileConnecti
     @NotNull
     public ParserDefinition getParserDefinition() {
         return parserDefinition;
-    }
-
-    @NonNls
-    @Nullable
-    public DBLanguageDialect getLanguageDialect() {
-        VirtualFile virtualFile = getVirtualFile();
-        if (virtualFile instanceof DatabaseContentFile) {
-            DatabaseContentFile contentFile = (DatabaseContentFile) virtualFile;
-            return contentFile.getLanguageDialect();
-        }
-        
-        Language language = getLanguage();
-        if (language instanceof DBLanguage) {
-            DBLanguage dbLanguage = (DBLanguage) language;
-            ConnectionHandler connectionHandler = getActiveConnection();
-            if (connectionHandler != null) {
-
-                DBLanguageDialect languageDialect = connectionHandler.getLanguageDialect(dbLanguage);
-                if (languageDialect != null){
-                    return languageDialect;
-                }
-            } else {
-                return dbLanguage.getAvailableLanguageDialects()[0];
-            }
-        } else if (language instanceof DBLanguageDialect) {
-            return (DBLanguageDialect) language;
-        }
-        
-        return null;
     }
 
     public VirtualFile getVirtualFile() {
@@ -242,16 +188,6 @@ public abstract class DBLanguageFile extends PsiFileImpl implements FileConnecti
         return false;
     }
 
-    @NotNull
-    @Override
-    public Language getLanguage() {
-        return language;
-    }
-
-    public DBLanguage getDBLanguage() {
-        return language instanceof DBLanguage ? (DBLanguage) language : null;
-    }
-
     @Override
     public void navigate(boolean requestFocus) {
         Editor selectedEditor = EditorUtil.getSelectedEditor(getProject());
@@ -283,7 +219,7 @@ public abstract class DBLanguageFile extends PsiFileImpl implements FileConnecti
     }
 
     public ElementTypeBundle getElementTypeBundle() {
-        return getLanguageDialect().getParserDefinition().getParser().getElementTypes();
+        return ((SqlLikeLanguageVersion)getLanguageVersion()).getElementTypes();
     }
 
     @Override

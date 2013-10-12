@@ -1,14 +1,14 @@
 package com.dci.intellij.dbn.code.psql.color;
 
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.code.common.color.DBLColorSettingsPage;
 import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.language.psql.PSQLLanguage;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.Icon;
 
 public class PSQLColorSettingsPage extends DBLColorSettingsPage {
     public PSQLColorSettingsPage() {
@@ -39,7 +39,7 @@ public class PSQLColorSettingsPage extends DBLColorSettingsPage {
 
     @NotNull
     public SyntaxHighlighter getHighlighter() {
-        return PSQLLanguage.INSTANCE.getMainLanguageDialect().getSyntaxHighlighter();
+        return PSQLLanguage.INSTANCE.getFirstVersion().getSyntaxHighlighter();
     }
 
     public String getDemoTextFileName() {

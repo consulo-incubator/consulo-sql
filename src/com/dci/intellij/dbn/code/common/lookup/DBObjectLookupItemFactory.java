@@ -8,7 +8,7 @@ import com.dci.intellij.dbn.code.common.style.options.CodeStyleCaseOption;
 import com.dci.intellij.dbn.code.common.style.options.CodeStyleCaseSettings;
 import com.dci.intellij.dbn.common.util.StringUtil;
 import com.dci.intellij.dbn.database.DatabaseCompatibilityInterface;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.object.DBSynonym;
 import com.dci.intellij.dbn.object.common.DBObject;
 import com.dci.intellij.dbn.object.common.DBVirtualObject;
@@ -17,11 +17,11 @@ import com.intellij.openapi.project.Project;
 import javax.swing.Icon;
 
 public class DBObjectLookupItemFactory extends LookupItemFactory {
-    private DBLanguage language;
+    private SqlLikeLanguage language;
     private DBObject object;
     private String typeName;
 
-    public DBObjectLookupItemFactory(DBObject object, DBLanguage language) {
+    public DBObjectLookupItemFactory(DBObject object, SqlLikeLanguage language) {
         this.object = object;
         this.language = language;
     }

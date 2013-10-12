@@ -1,7 +1,7 @@
 package com.dci.intellij.dbn.code.common.completion;
 
 import com.dci.intellij.dbn.common.ui.KeyUtil;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.intellij.codeInsight.completion.CompletionContributor;
 import com.intellij.codeInsight.completion.CompletionInitializationContext;
 import com.intellij.codeInsight.completion.CompletionParameters;
@@ -27,7 +27,7 @@ public class CodeCompletionContributor extends CompletionContributor {
 
     @Override
     public void beforeCompletion(@NotNull CompletionInitializationContext context) {
-        if (context.getPositionLanguage() instanceof DBLanguage) {
+        if (context.getPositionLanguage() instanceof SqlLikeLanguage) {
             context.setDummyIdentifier(DUMMY_TOKEN);
         }
     }

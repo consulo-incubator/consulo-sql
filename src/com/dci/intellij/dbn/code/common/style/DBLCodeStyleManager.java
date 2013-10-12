@@ -1,10 +1,13 @@
 package com.dci.intellij.dbn.code.common.style;
 
+import org.jdom.Element;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.code.common.style.options.CodeStyleCaseOption;
 import com.dci.intellij.dbn.code.common.style.options.CodeStyleCaseSettings;
 import com.dci.intellij.dbn.common.AbstractProjectComponent;
 import com.dci.intellij.dbn.common.util.DocumentUtil;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.language.common.TokenType;
 import com.dci.intellij.dbn.language.common.psi.IdentifierPsiElement;
 import com.dci.intellij.dbn.language.common.psi.LeafPsiElement;
@@ -22,9 +25,6 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import org.jdom.Element;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 
 public class DBLCodeStyleManager extends AbstractProjectComponent implements JDOMExternalizable {
     private DBLCodeStyleManager(Project project) {
@@ -49,14 +49,14 @@ public class DBLCodeStyleManager extends AbstractProjectComponent implements JDO
         }
     }
 
-    public CodeStyleCaseSettings getCodeStyleCaseSettings(DBLanguage language) {
+    public CodeStyleCaseSettings getCodeStyleCaseSettings(SqlLikeLanguage language) {
         return language.getCodeStyleSettings(getProject()).getCaseSettings();
     }
 
     private void format(Document document, PsiElement psiElement, int startOffset, int endOffset){
         Language language = PsiUtil.getLanguage(psiElement);
-        if (language instanceof DBLanguage) {
-            CodeStyleCaseSettings styleCaseSettings = getCodeStyleCaseSettings((DBLanguage) language);
+        if (language instanceof SqlLikeLanguage) {
+            CodeStyleCaseSettings styleCaseSettings = getCodeStyleCaseSettings((SqlLikeLanguage) language);
             PsiElement child = psiElement.getFirstChild();
             while (child != null) {
                 if (child instanceof LeafPsiElement) {

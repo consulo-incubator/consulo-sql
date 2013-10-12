@@ -9,9 +9,8 @@ import com.dci.intellij.dbn.database.DatabaseMessageParserInterface;
 import com.dci.intellij.dbn.database.DatabaseMetadataInterface;
 import com.dci.intellij.dbn.database.common.DatabaseInterfaceProviderImpl;
 import com.dci.intellij.dbn.database.common.DatabaseNativeDataTypes;
-import com.dci.intellij.dbn.language.common.DBLanguageDialectIdentifier;
-import com.dci.intellij.dbn.language.psql.PSQLLanguage;
-import com.dci.intellij.dbn.language.sql.SQLLanguage;
+import com.dci.intellij.dbn.language.psql.dialect.oracle.OraclePLSQLLanguageDialect;
+import com.dci.intellij.dbn.language.sql.dialect.oracle.OracleSQLLanguageDialect;
 
 public class OracleInterfaceProvider extends DatabaseInterfaceProviderImpl {
     private DatabaseMessageParserInterface MESSAGE_PARSER_INTERFACE = new OracleMessageParserInterface();
@@ -24,8 +23,8 @@ public class OracleInterfaceProvider extends DatabaseInterfaceProviderImpl {
 
 
     public OracleInterfaceProvider() {
-        super(SQLLanguage.INSTANCE.getLanguageDialect(DBLanguageDialectIdentifier.ORACLE_SQL.getValue()),
-                PSQLLanguage.INSTANCE.getLanguageDialect(DBLanguageDialectIdentifier.ORACLE_PLSQL.getValue()));
+        super(OracleSQLLanguageDialect.class,
+				OraclePLSQLLanguageDialect.class);
     }
 
     @Override

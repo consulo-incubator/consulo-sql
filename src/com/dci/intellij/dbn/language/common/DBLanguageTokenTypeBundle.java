@@ -1,21 +1,22 @@
 package com.dci.intellij.dbn.language.common;
 
-import com.intellij.lang.Language;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
 import gnu.trove.THashMap;
-import org.jdom.Document;
-import org.jdom.Element;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import com.intellij.openapi.diagnostic.Logger;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.psi.tree.TokenSet;
+
 public abstract class DBLanguageTokenTypeBundle {
     protected final Logger log = Logger.getInstance(getClass().getName());
-    private Language language;
+	protected final SqlLikeLanguage language;
+	protected final SqlLikeLanguageVersion<? extends SqlLikeLanguage> languageVersion;
     private SimpleTokenType[] keywords;
     private SimpleTokenType[] functions;
     private SimpleTokenType[] parameters;
@@ -38,19 +39,24 @@ public abstract class DBLanguageTokenTypeBundle {
         return tokenTypes;
     }
 
-    public DBLanguageTokenTypeBundle(Language language, Document document) {
+    public DBLanguageTokenTypeBundle(SqlLikeLanguage language, SqlLikeLanguageVersion<? extends SqlLikeLanguage> languageVersion, Document document) {
         this.language = language;
-        loadDefinition(language, document);
+		this.languageVersion = languageVersion;
+        loadDefinition(document);
     }
 
-    public Language getLanguage() {
+    public SqlLikeLanguage getLanguage() {
         return language;
     }
 
-    protected void loadDefinition(Language language, Document document) {
+	public SqlLikeLanguageVersion<? extends SqlLikeLanguage> getLanguageVersion() {
+		return languageVersion;
+	}
+
+    protected void loadDefinition(Document document) {
         try {
             Element root = document.getRootElement();
-            parseTokens(root.getChild("tokens"), language);
+            parseTokens(root.getChild("tokens"));
             parseTokenSets(root.getChild("token-sets"));
 
         } catch (Exception e) {
@@ -58,7 +64,7 @@ public abstract class DBLanguageTokenTypeBundle {
         }
     }
 
-    private void parseTokens(Element tokenDefs, Language language) {
+    private void parseTokens(Element tokenDefs) {
         List<SimpleTokenType> keywordList = new ArrayList<SimpleTokenType>();
         List<SimpleTokenType> functionList = new ArrayList<SimpleTokenType>();
         List<SimpleTokenType> parameterList = new ArrayList<SimpleTokenType>();
@@ -67,7 +73,7 @@ public abstract class DBLanguageTokenTypeBundle {
         List<SimpleTokenType> characterList = new ArrayList<SimpleTokenType>();
         List<SimpleTokenType> operatorList = new ArrayList<SimpleTokenType>();
         for (Object o : tokenDefs.getChildren()) {
-            SimpleTokenType tokenType = new SimpleTokenType((Element) o, language);
+            SimpleTokenType tokenType = new SimpleTokenType((Element) o, language, languageVersion);
             log.debug("Creating token type '" + tokenType.getId() + "'");
             tokenTypes.put(tokenType.getId(), tokenType);
             switch(tokenType.getTokenTypeIdentifier()) {

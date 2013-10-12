@@ -1,13 +1,26 @@
 package com.dci.intellij.dbn.vfs;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.common.util.DocumentUtil;
 import com.dci.intellij.dbn.connection.ConnectionHandler;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
 import com.dci.intellij.dbn.language.common.DBLanguageFile;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 import com.dci.intellij.dbn.language.sql.SQLFileType;
 import com.dci.intellij.dbn.object.DBSchema;
+import com.intellij.lang.LanguageParserDefinitions;
+import com.intellij.lang.LanguageVersion;
+import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -15,15 +28,6 @@ import com.intellij.openapi.vfs.VirtualFileSystem;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.PsiDocumentManagerImpl;
 import com.intellij.util.LocalTimeCounter;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.Icon;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
 
 public class SQLConsoleFile extends VirtualFile implements DatabaseFile, DBVirtualFile {
     private long modificationTimestamp = LocalTimeCounter.currentTime();
@@ -44,12 +48,14 @@ public class SQLConsoleFile extends VirtualFile implements DatabaseFile, DBVirtu
         setCharset(connectionHandler.getSettings().getDetailSettings().getCharset());
     }
 
-    public PsiFile initializePsiFile(DatabaseFileViewProvider fileViewProvider, DBLanguage language) {
+    public PsiFile initializePsiFile(DatabaseFileViewProvider fileViewProvider, SqlLikeLanguage language) {
         ConnectionHandler connectionHandler = getConnectionHandler();
         if (connectionHandler != null) {
-            DBLanguageDialect languageDialect = connectionHandler.getLanguageDialect(language);
-            if (languageDialect != null) {
-                DBLanguageFile file = (DBLanguageFile) languageDialect.getParserDefinition().createFile(fileViewProvider);
+			ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
+			SqlLikeLanguageVersion languageDialect = connectionHandler.getLanguageDialect(language);
+            if (parserDefinition != null && languageDialect != null) {
+                DBLanguageFile file = (DBLanguageFile) parserDefinition.createFile(fileViewProvider);
+				file.putUserData(LanguageVersion.KEY, languageDialect);
                 fileViewProvider.forceCachedPsi(file);
                 Document document = DocumentUtil.getDocument(fileViewProvider.getVirtualFile());
                 PsiDocumentManagerImpl.cachePsi(document, file);

@@ -1,8 +1,10 @@
 package com.dci.intellij.dbn.language.common.element;
 
+import javax.swing.Icon;
+
 import com.dci.intellij.dbn.code.common.style.formatting.FormattingDefinition;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 import com.dci.intellij.dbn.language.common.element.lookup.ElementTypeLookupCache;
 import com.dci.intellij.dbn.language.common.element.parser.ElementTypeParser;
 import com.dci.intellij.dbn.language.common.element.util.ElementTypeAttribute;
@@ -10,8 +12,6 @@ import com.dci.intellij.dbn.language.common.element.util.ElementTypeAttributesBu
 import com.dci.intellij.dbn.object.common.DBObjectType;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-
-import javax.swing.Icon;
 
 public interface ElementType {
 
@@ -25,9 +25,9 @@ public interface ElementType {
 
     ElementType getParent();
 
-    DBLanguage getLanguage();
+    SqlLikeLanguage getLanguage();
 
-    DBLanguageDialect getLanguageDialect();
+    SqlLikeLanguageVersion<?> getLanguageVersion();
 
     ElementTypeLookupCache getLookupCache();
 

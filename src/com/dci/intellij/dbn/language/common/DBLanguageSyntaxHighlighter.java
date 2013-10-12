@@ -1,30 +1,30 @@
 package com.dci.intellij.dbn.language.common;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jdom.Document;
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.common.util.CommonUtil;
 import com.intellij.lexer.Lexer;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
 import com.intellij.psi.tree.IElementType;
-import org.jdom.Document;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class DBLanguageSyntaxHighlighter extends SyntaxHighlighterBase {
     protected Map colors = new HashMap();
     private Map backgrounds = new HashMap();
 
-    private DBLanguageDialect languageDialect;
+    private SqlLikeLanguageVersion<? extends SqlLikeLanguage> languageDialect;
     private TokenTypeBundle tokenTypes;
 
-    public DBLanguageSyntaxHighlighter(DBLanguageDialect languageDialect, String tokenTypesFile) {
+    public DBLanguageSyntaxHighlighter(SqlLikeLanguageVersion<? extends SqlLikeLanguage> languageDialect, String tokenTypesFile) {
         Document document = CommonUtil.loadXmlFile(getClass(), tokenTypesFile);
-        tokenTypes = new TokenTypeBundle(languageDialect, document);
+        tokenTypes = new TokenTypeBundle(languageDialect.getLanguage(), languageDialect, document);
         this.languageDialect = languageDialect;
     }
 
-    public DBLanguageDialect getLanguageDialect() {
+    public SqlLikeLanguageVersion<? extends SqlLikeLanguage> getLanguageDialect() {
         return languageDialect;
     }
 

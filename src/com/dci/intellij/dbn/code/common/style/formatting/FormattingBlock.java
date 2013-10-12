@@ -5,7 +5,7 @@ import com.dci.intellij.dbn.code.common.style.options.CodeStyleFormattingOption;
 import com.dci.intellij.dbn.code.common.style.presets.CodeStyleDefaultPresets;
 import com.dci.intellij.dbn.code.common.style.presets.CodeStylePreset;
 import com.dci.intellij.dbn.common.util.CommonUtil;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.language.common.DBLanguageFile;
 import com.dci.intellij.dbn.language.common.element.ElementType;
 import com.dci.intellij.dbn.language.common.psi.BasePsiElement;
@@ -254,7 +254,7 @@ public class FormattingBlock implements Block {
         CodeStyleCustomSettings codeStyleCustomSettings = this.codeStyleCustomSettings;
         if (child instanceof ChameleonPsiElement) {
             ChameleonPsiElement element = (ChameleonPsiElement) child;
-            DBLanguage language = (DBLanguage) PsiUtil.getLanguage(element);
+            SqlLikeLanguage language = (SqlLikeLanguage) PsiUtil.getLanguage(element);
             codeStyleCustomSettings = language.getCodeStyleSettings(psiElement.getProject());
         }
         return codeStyleCustomSettings;

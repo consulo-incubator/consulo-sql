@@ -1,14 +1,14 @@
 package com.dci.intellij.dbn.code.sql.color;
 
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.code.common.color.DBLColorSettingsPage;
 import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.language.sql.SQLLanguage;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.options.colors.AttributesDescriptor;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.Icon;
 
 public class SQLColorSettingsPage extends DBLColorSettingsPage {
 
@@ -44,7 +44,7 @@ public class SQLColorSettingsPage extends DBLColorSettingsPage {
 
     @NotNull
     public SyntaxHighlighter getHighlighter() {
-        return SQLLanguage.INSTANCE.getMainLanguageDialect().getSyntaxHighlighter();
+        return SQLLanguage.INSTANCE.getFirstVersion().getSyntaxHighlighter();
     }
 
     public String getDemoTextFileName() {

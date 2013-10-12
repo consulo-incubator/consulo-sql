@@ -1,5 +1,9 @@
 package com.dci.intellij.dbn.language.common;
 
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.language.common.element.ElementType;
 import com.dci.intellij.dbn.language.common.element.ElementTypeBundle;
 import com.dci.intellij.dbn.language.common.element.lookup.ElementTypeLookupCache;
@@ -10,91 +14,108 @@ import com.dci.intellij.dbn.object.common.DBObjectType;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.Icon;
+public class ChameleonTokenType extends SimpleTokenType implements ElementType
+{
+	private SqlLikeLanguageVersion injectedLanguage;
 
-public class ChameleonTokenType extends SimpleTokenType implements ElementType {
-    private DBLanguageDialect injectedLanguage;
-    public ChameleonTokenType(@Nullable DBLanguageDialect hostLanguage, DBLanguageDialect injectedLanguage) {
-        super(injectedLanguage.getID() + " block", hostLanguage);
-        this.injectedLanguage = injectedLanguage;
-    }
+	public ChameleonTokenType(@Nullable SqlLikeLanguageVersion hostLanguage, SqlLikeLanguageVersion injectedLanguage)
+	{
+		super(injectedLanguage + " block", hostLanguage.getLanguage(), hostLanguage);
+		this.injectedLanguage = injectedLanguage;
+	}
 
-    @NotNull
-    @Override
-    public DBLanguage getLanguage() {
-        return getLanguageDialect().getBaseLanguage();
-    }
+	@NotNull
+	@Override
+	public SqlLikeLanguage getLanguage()
+	{
+		return (SqlLikeLanguage) super.getLanguage();
+	}
 
-    @Override
-    public DBLanguageDialect getLanguageDialect() {
-        return (DBLanguageDialect) super.getLanguage();
-    }
+	@Override
+	public SqlLikeLanguageVersion<?> getLanguageVersion()
+	{
+		return (SqlLikeLanguageVersion<?>) super.getLanguageVersion();
+	}
 
-    public DBLanguageDialect getInjectedLanguage() {
-        return injectedLanguage;
-    }
+	public SqlLikeLanguageVersion getInjectedLanguage()
+	{
+		return injectedLanguage;
+	}
 
-    public String getDebugName() {
-        return toString();
-    }
+	public String getDebugName()
+	{
+		return toString();
+	}
 
-    public Icon getIcon() {
-        return null;
-    }
+	public Icon getIcon()
+	{
+		return null;
+	}
 
-    public ElementType getParent() {
-        return null;
-    }
+	public ElementType getParent()
+	{
+		return null;
+	}
 
-    public ElementTypeLookupCache getLookupCache() {
-        return null;
-    }
+	public ElementTypeLookupCache getLookupCache()
+	{
+		return null;
+	}
 
-    public ElementTypeParser getParser() {
-        return null;
-    }
+	public ElementTypeParser getParser()
+	{
+		return null;
+	}
 
-    public boolean is(ElementTypeAttribute attribute) {
-        return false;
-    }
+	public boolean is(ElementTypeAttribute attribute)
+	{
+		return false;
+	}
 
-    public boolean isLeaf() {
-        return false;
-    }
+	public boolean isLeaf()
+	{
+		return false;
+	}
 
-    public boolean isVirtualObject() {
-        return false;
-    }
+	public boolean isVirtualObject()
+	{
+		return false;
+	}
 
-    public boolean isVirtualObjectInsideLookup() {
-        return false;
-    }
+	public boolean isVirtualObjectInsideLookup()
+	{
+		return false;
+	}
 
-    public DBObjectType getVirtualObjectType() {
-        return null;
-    }
+	public DBObjectType getVirtualObjectType()
+	{
+		return null;
+	}
 
-    public PsiElement createPsiElement(ASTNode astNode) {
-        return new ASTWrapperPsiElement(astNode);
-    }
+	public PsiElement createPsiElement(ASTNode astNode)
+	{
+		return new ASTWrapperPsiElement(astNode);
+	}
 
-    public String getResolveScopeId() {
-        return null;
-    }
+	public String getResolveScopeId()
+	{
+		return null;
+	}
 
-    public ElementTypeBundle getElementBundle() {
-        return null;
-    }
+	public ElementTypeBundle getElementBundle()
+	{
+		return null;
+	}
 
-    public void registerVirtualObject(DBObjectType objectType) {
+	public void registerVirtualObject(DBObjectType objectType)
+	{
 
-    }
+	}
 
-    @Override
-    public ElementTypeAttributesBundle getAttributes() {
-        return null;
-    }
+	@Override
+	public ElementTypeAttributesBundle getAttributes()
+	{
+		return null;
+	}
 }

@@ -1,8 +1,11 @@
 package com.dci.intellij.dbn.language.common.element;
 
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.code.common.style.formatting.FormattingDefinition;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 import com.dci.intellij.dbn.language.common.TokenType;
 import com.dci.intellij.dbn.language.common.TokenTypeIdentifier;
 import com.dci.intellij.dbn.language.common.element.lookup.ElementTypeLookupCache;
@@ -14,170 +17,205 @@ import com.dci.intellij.dbn.object.common.DBObjectType;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.ILazyParseableElementType;
-import org.jetbrains.annotations.NotNull;
 
-import javax.swing.Icon;
+public class ChameleonElementType extends ILazyParseableElementType implements ElementType, TokenType
+{
+	public ChameleonElementType(SqlLikeLanguageVersion languageVersion)
+	{
+		super("chameleon (" + languageVersion + ")", languageVersion.getLanguage(), languageVersion);
+	}
 
-public class ChameleonElementType extends ILazyParseableElementType implements ElementType, TokenType {
-    public ChameleonElementType(DBLanguageDialect language) {
-        super("chameleon (" + language.getDisplayName() + ")", language);
-    }
+	@NotNull
+	@Override
+	public SqlLikeLanguage getLanguage()
+	{
+		return (SqlLikeLanguage) super.getLanguage();
+	}
 
-    public String getId() {
-        return "";
-    }
+	@Override
+	public SqlLikeLanguageVersion<?> getLanguageVersion()
+	{
+		return (SqlLikeLanguageVersion<?>) super.getLanguageVersion();
+	}
 
+	public String getId()
+	{
+		return "";
+	}
 
-    @NotNull
-    @Override
-    public DBLanguage getLanguage() {
-        return getLanguageDialect().getBaseLanguage();
-    }
+	public String getDescription()
+	{
+		return getDebugName();
+	}
 
-    @Override
-    public DBLanguageDialect getLanguageDialect() {
-        return (DBLanguageDialect) super.getLanguage();
-    }
+	public String getDebugName()
+	{
+		return toString();
+	}
 
-    public String getDescription() {
-        return getDebugName();
-    }
+	public Icon getIcon()
+	{
+		return null;
+	}
 
-    public String getDebugName() {
-        return toString();
-    }
+	public ElementType getParent()
+	{
+		return null;
+	}
 
-    public Icon getIcon() {
-        return null;
-    }
+	public ElementTypeLookupCache getLookupCache()
+	{
+		return null;
+	}
 
-    public ElementType getParent() {
-        return null;
-    }
+	public ElementTypeParser getParser()
+	{
+		return null;
+	}
 
-    public ElementTypeLookupCache getLookupCache() {
-        return null;
-    }
+	@Override
+	public FormattingDefinition getFormatting()
+	{
+		return null;
+	}
 
-    public ElementTypeParser getParser() {
-        return null;
-    }
+	@Override
+	public void setDefaultFormatting(FormattingDefinition defaults)
+	{
+	}
 
-    @Override
-    public FormattingDefinition getFormatting() {
-        return null;
-    }
+	@Override
+	public ElementTypeAttributesBundle getAttributes()
+	{
+		return null;
+	}
 
-    @Override
-    public void setDefaultFormatting(FormattingDefinition defaults) {
-    }
+	public boolean is(ElementTypeAttribute attribute)
+	{
+		return false;
+	}
 
-    @Override
-    public ElementTypeAttributesBundle getAttributes() {
-        return null;
-    }
+	public boolean isLeaf()
+	{
+		return false;
+	}
 
-    public boolean is(ElementTypeAttribute attribute) {
-        return false;
-    }
+	public boolean isVirtualObject()
+	{
+		return false;
+	}
 
-    public boolean isLeaf() {
-        return false;
-    }
+	public boolean isVirtualObjectInsideLookup()
+	{
+		return false;
+	}
 
-    public boolean isVirtualObject() {
-        return false;
-    }
+	public DBObjectType getVirtualObjectType()
+	{
+		return null;
+	}
 
-    public boolean isVirtualObjectInsideLookup() {
-        return false;
-    }
+	public PsiElement createPsiElement(ASTNode astNode)
+	{
+		return new ChameleonPsiElement(astNode, this);
+	}
 
-    public DBObjectType getVirtualObjectType() {
-        return null;
-    }
+	public String getResolveScopeId()
+	{
+		return null;
+	}
 
-    public PsiElement createPsiElement(ASTNode astNode) {
-        return new ChameleonPsiElement(astNode, this);
-    }
+	public ElementTypeBundle getElementBundle()
+	{
+		return null;
+	}
 
-    public String getResolveScopeId() {
-        return null;
-    }
+	public void registerVirtualObject(DBObjectType objectType)
+	{
+	}
 
-    public ElementTypeBundle getElementBundle() {
-        return null;
-    }
+	public int getIdx()
+	{
+		return 0;
+	}
 
-    public void registerVirtualObject(DBObjectType objectType) {
-    }
+	public String getValue()
+	{
+		return null;
+	}
 
+	public String getTypeName()
+	{
+		return null;
+	}
 
-    public int getIdx() {
-        return 0;
-    }
+	public boolean isSuppressibleReservedWord()
+	{
+		return false;
+	}
 
-    public String getValue() {
-        return null;
-    }
+	public boolean isIdentifier()
+	{
+		return false;
+	}
 
-    public String getTypeName() {
-        return null;
-    }
+	public boolean isVariable()
+	{
+		return false;
+	}
 
-    public boolean isSuppressibleReservedWord() {
-        return false;
-    }
+	public boolean isQuotedIdentifier()
+	{
+		return false;
+	}
 
-    public boolean isIdentifier() {
-        return false;
-    }
+	public boolean isKeyword()
+	{
+		return false;
+	}
 
-    public boolean isVariable() {
-        return false;
-    }
+	public boolean isFunction()
+	{
+		return false;
+	}
 
-    public boolean isQuotedIdentifier() {
-        return false;
-    }
+	public boolean isParameter()
+	{
+		return false;
+	}
 
-    public boolean isKeyword() {
-        return false;
-    }
+	public boolean isDataType()
+	{
+		return false;
+	}
 
-    public boolean isFunction() {
-        return false;
-    }
+	public boolean isCharacter()
+	{
+		return false;
+	}
 
-    public boolean isParameter() {
-        return false;
-    }
+	public boolean isOperator()
+	{
+		return false;
+	}
 
-    public boolean isDataType() {
-        return false;
-    }
+	public boolean isChameleon()
+	{
+		return true;
+	}
 
-    public boolean isCharacter() {
-        return false;
-    }
+	public boolean isReservedWord()
+	{
+		return false;
+	}
 
-    public boolean isOperator() {
-        return false;
-    }
+	public boolean isParserLandmark()
+	{
+		return false;
+	}
 
-    public boolean isChameleon() {
-        return true;
-    }
-
-    public boolean isReservedWord() {
-        return false;
-    }
-
-    public boolean isParserLandmark() {
-        return false;
-    }
-
-    public TokenTypeIdentifier getTokenTypeIdentifier() {
-        return null;
-    }
+	public TokenTypeIdentifier getTokenTypeIdentifier()
+	{
+		return null;
+	}
 }

@@ -1,18 +1,17 @@
 package com.dci.intellij.dbn.language.common;
 
-import com.dci.intellij.dbn.connection.ConnectionHandler;
-import com.dci.intellij.dbn.connection.mapping.FileConnectionMappingManager;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.openapi.fileTypes.PlainSyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.openapi.fileTypes.SyntaxHighlighterProvider;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.Nullable;
 
 public class DBSyntaxHighlighterProvider implements SyntaxHighlighterProvider {
     public SyntaxHighlighter create(FileType fileType, @Nullable Project project, @Nullable VirtualFile virtualFile) {
-        DBLanguageFileType dbFileType = (DBLanguageFileType) (virtualFile == null ? fileType : virtualFile.getFileType());
-        DBLanguage language = (DBLanguage) dbFileType.getLanguage();
+        /*DBLanguageFileType dbFileType = (DBLanguageFileType) (virtualFile == null ? fileType : virtualFile.getFileType());
+        SqlLikeLanguage language = (SqlLikeLanguage) dbFileType.getLanguage();
 
         DBLanguageDialect mainLanguageDialect = language.getMainLanguageDialect();
         if (project != null && virtualFile != null) {
@@ -25,7 +24,8 @@ public class DBSyntaxHighlighterProvider implements SyntaxHighlighterProvider {
                     languageDialect.createSyntaxHighlighter();
         }
 
-        return mainLanguageDialect.getSyntaxHighlighter();
+        return mainLanguageDialect.getSyntaxHighlighter();   */
 
+		return new PlainSyntaxHighlighter();
     }
 }

@@ -1,6 +1,8 @@
 package com.dci.intellij.dbn.language.psql.template;
 
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.language.common.psi.LeafPsiElement;
 import com.dci.intellij.dbn.language.common.psi.PsiUtil;
 import com.dci.intellij.dbn.language.psql.PSQLLanguage;
@@ -8,8 +10,6 @@ import com.intellij.codeInsight.template.TemplateContextType;
 import com.intellij.lang.Language;
 import com.intellij.openapi.fileTypes.SyntaxHighlighter;
 import com.intellij.psi.PsiFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class PSQLTemplateContextType extends TemplateContextType {
     protected PSQLTemplateContextType() {
@@ -19,7 +19,7 @@ public class PSQLTemplateContextType extends TemplateContextType {
     @Override
     public boolean isInContext(@NotNull PsiFile file, int offset) {
         Language language = file.getLanguage();
-        if (language instanceof DBLanguage) {
+        if (language instanceof SqlLikeLanguage) {
             // support PSQL in SQL language
             LeafPsiElement leafPsiElement = PsiUtil.lookupLeafBeforeOffset(file, offset);
             if (leafPsiElement != null) {
@@ -34,6 +34,6 @@ public class PSQLTemplateContextType extends TemplateContextType {
     @Nullable
     @Override
     public SyntaxHighlighter createHighlighter() {
-        return PSQLLanguage.INSTANCE.getMainLanguageDialect().getSyntaxHighlighter();
+        return PSQLLanguage.INSTANCE.getFirstVersion().getSyntaxHighlighter();
     }
 }

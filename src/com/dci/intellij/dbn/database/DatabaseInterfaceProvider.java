@@ -2,13 +2,13 @@ package com.dci.intellij.dbn.database;
 
 import com.dci.intellij.dbn.connection.DatabaseType;
 import com.dci.intellij.dbn.database.common.DatabaseNativeDataTypes;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 
 public interface DatabaseInterfaceProvider {
     DatabaseType getDatabaseType();
 
-    DBLanguageDialect getLanguageDialect(DBLanguage language);
+	SqlLikeLanguageVersion<? extends SqlLikeLanguage> getLanguageDialect(SqlLikeLanguage language);
 
     DatabaseNativeDataTypes getNativeDataTypes();
 

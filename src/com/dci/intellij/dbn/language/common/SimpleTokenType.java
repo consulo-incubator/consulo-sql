@@ -1,14 +1,15 @@
 package com.dci.intellij.dbn.language.common;
 
-import com.dci.intellij.dbn.code.common.style.formatting.FormattingDefinition;
-import com.dci.intellij.dbn.code.common.style.formatting.FormattingDefinitionFactory;
-import com.dci.intellij.dbn.common.util.StringUtil;
-import com.intellij.lang.Language;
-import com.intellij.psi.tree.IElementType;
 import org.jdom.Element;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.dci.intellij.dbn.code.common.style.formatting.FormattingDefinition;
+import com.dci.intellij.dbn.code.common.style.formatting.FormattingDefinitionFactory;
+import com.dci.intellij.dbn.common.util.StringUtil;
+import com.intellij.lang.Language;
+import com.intellij.lang.LanguageVersion;
+import com.intellij.psi.tree.IElementType;
 
 public class SimpleTokenType extends IElementType implements TokenType {
     private String id;
@@ -20,11 +21,11 @@ public class SimpleTokenType extends IElementType implements TokenType {
     private int hashCode;
     private FormattingDefinition formatting;
 
-    public SimpleTokenType(@NotNull @NonNls String debugName, @Nullable Language language) {
-        super(debugName, language);
+    public SimpleTokenType(@NotNull @NonNls String debugName, Language language, @Nullable LanguageVersion languageVersion) {
+        super(debugName, language, languageVersion);
     }
 
-    public SimpleTokenType(SimpleTokenType source, Language language) {
+    /*public SimpleTokenType(SimpleTokenType source, Language language) {
         super(source.toString(), language);
         this.id = source.getId();
         this.value = source.getValue();
@@ -34,10 +35,10 @@ public class SimpleTokenType extends IElementType implements TokenType {
         this.idx = source.getIdx();
 
         formatting = FormattingDefinitionFactory.cloneDefinition(source.getFormatting());
-    }
+    }*/
 
-    public SimpleTokenType(Element element, Language language) {
-        super(element.getAttributeValue("id"), language);
+    public SimpleTokenType(Element element, Language language, LanguageVersion languageVersion) {
+        super(element.getAttributeValue("id"), language, languageVersion);
         id = element.getAttributeValue("id");
         value = element.getAttributeValue("value");
         description = element.getAttributeValue("description");
@@ -50,9 +51,17 @@ public class SimpleTokenType extends IElementType implements TokenType {
         String type = element.getAttributeValue("type");
         tokenTypeIdentifier = TokenTypeIdentifier.getIdentifier(type);
         isSuppressibleReservedWord = isReservedWord() && !Boolean.parseBoolean(element.getAttributeValue("reserved"));
-        hashCode = (language.getDisplayName() + id).hashCode();
+		try
+		{
+			hashCode = (language.getDisplayName() + id).hashCode();
+		}
+		catch(Exception e)
+		{
+			System.out.println(language + " " + languageVersion);
+			e.printStackTrace();
+		}
 
-        formatting = FormattingDefinitionFactory.loadDefinition(element);
+		formatting = FormattingDefinitionFactory.loadDefinition(element);
     }
 
     public void setDefaultFormatting(FormattingDefinition defaultFormatting) {
@@ -152,11 +161,8 @@ public class SimpleTokenType extends IElementType implements TokenType {
 
     private SharedTokenTypeBundle getSharedTokenTypes() {
         Language lang = getLanguage();
-        if (lang instanceof DBLanguageDialect) {
-            DBLanguageDialect languageDialect = (DBLanguageDialect) lang;
-            return languageDialect.getSharedTokenTypes();
-        } else if (lang instanceof DBLanguage) {
-            DBLanguage language = (DBLanguage) lang;
+        if (lang instanceof SqlLikeLanguage) {
+            SqlLikeLanguage language = (SqlLikeLanguage) lang;
             return language.getSharedTokenTypes();
         }
         return null;

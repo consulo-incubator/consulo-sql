@@ -9,8 +9,7 @@ import com.dci.intellij.dbn.database.DatabaseMessageParserInterface;
 import com.dci.intellij.dbn.database.DatabaseMetadataInterface;
 import com.dci.intellij.dbn.database.common.DatabaseInterfaceProviderImpl;
 import com.dci.intellij.dbn.database.common.DatabaseNativeDataTypes;
-import com.dci.intellij.dbn.language.common.DBLanguageDialectIdentifier;
-import com.dci.intellij.dbn.language.sql.SQLLanguage;
+import com.dci.intellij.dbn.language.sql.dialect.iso92.Iso92SQLLanguageDialect;
 
 public class GenericInterfaceProvider extends DatabaseInterfaceProviderImpl {
     private DatabaseMessageParserInterface MESSAGE_PARSER_INTERFACE = new GenericMessageParserInterface();
@@ -21,7 +20,7 @@ public class GenericInterfaceProvider extends DatabaseInterfaceProviderImpl {
     private DatabaseNativeDataTypes NATIVE_DATA_TYPES = new GenericNativeDataTypes();
 
     public GenericInterfaceProvider() {
-        super(SQLLanguage.INSTANCE.getLanguageDialect(DBLanguageDialectIdentifier.ISO92_SQL.getValue()), null);
+        super(Iso92SQLLanguageDialect.class, null);
     }
 
     @Override

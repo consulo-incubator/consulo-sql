@@ -1,9 +1,12 @@
 package com.dci.intellij.dbn.language.common.element.impl;
 
+import java.util.Set;
+
+import org.jdom.Element;
 import com.dci.intellij.dbn.code.common.completion.options.filter.CodeCompletionFilterSettings;
 import com.dci.intellij.dbn.code.common.lookup.LookupValueProvider;
 import com.dci.intellij.dbn.code.common.lookup.TokenLookupItemFactory;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.language.common.TokenType;
 import com.dci.intellij.dbn.language.common.element.ElementType;
 import com.dci.intellij.dbn.language.common.element.ElementTypeBundle;
@@ -19,9 +22,6 @@ import com.dci.intellij.dbn.language.common.element.util.ElementTypeDefinitionEx
 import com.dci.intellij.dbn.language.common.psi.TokenPsiElement;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
-import org.jdom.Element;
-
-import java.util.Set;
 
 public class TokenElementTypeImpl extends LeafElementTypeImpl implements LookupValueProvider, TokenElementType {
     private TokenLookupItemFactory lookupItemFactory;
@@ -125,7 +125,7 @@ public class TokenElementTypeImpl extends LeafElementTypeImpl implements LookupV
         return getTokenType().isCharacter();
     }
 
-    public TokenLookupItemFactory getLookupItemFactory(DBLanguage language) {
+    public TokenLookupItemFactory getLookupItemFactory(SqlLikeLanguage language) {
         if (lookupItemFactory == null) {
             lookupItemFactory = new TokenLookupItemFactory(this);
         }

@@ -9,8 +9,7 @@ import com.dci.intellij.dbn.database.DatabaseMessageParserInterface;
 import com.dci.intellij.dbn.database.DatabaseMetadataInterface;
 import com.dci.intellij.dbn.database.common.DatabaseInterfaceProviderImpl;
 import com.dci.intellij.dbn.database.common.DatabaseNativeDataTypes;
-import com.dci.intellij.dbn.language.common.DBLanguageDialectIdentifier;
-import com.dci.intellij.dbn.language.sql.SQLLanguage;
+import com.dci.intellij.dbn.language.sql.dialect.mysql.MysqlSQLLanguageDialect;
 
 public class MySqlInterfaceProvider extends DatabaseInterfaceProviderImpl {
     private DatabaseMessageParserInterface MESSAGE_PARSER_INTERFACE = new MySqlMessageParserInterface();
@@ -21,7 +20,7 @@ public class MySqlInterfaceProvider extends DatabaseInterfaceProviderImpl {
     private DatabaseNativeDataTypes NATIVE_DATA_TYPES = new MySqlNativeDataTypes();
 
     public MySqlInterfaceProvider() {
-        super(SQLLanguage.INSTANCE.getLanguageDialect(DBLanguageDialectIdentifier.MYSQL_SQL.getValue()), null);
+        super(MysqlSQLLanguageDialect.class, null);
     }
 
     @Override

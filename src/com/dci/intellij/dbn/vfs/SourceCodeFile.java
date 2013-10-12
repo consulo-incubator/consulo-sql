@@ -1,5 +1,12 @@
 package com.dci.intellij.dbn.vfs;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.ref.Reference;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.common.DevNullStreams;
 import com.dci.intellij.dbn.common.util.DocumentUtil;
 import com.dci.intellij.dbn.common.util.MessageUtil;
@@ -7,11 +14,14 @@ import com.dci.intellij.dbn.common.util.StringUtil;
 import com.dci.intellij.dbn.connection.ConnectionHandler;
 import com.dci.intellij.dbn.database.DatabaseDDLInterface;
 import com.dci.intellij.dbn.editor.DBContentType;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
 import com.dci.intellij.dbn.language.common.DBLanguageFile;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 import com.dci.intellij.dbn.language.common.psi.PsiUtil;
 import com.dci.intellij.dbn.object.common.DBSchemaObject;
+import com.intellij.lang.LanguageParserDefinitions;
+import com.intellij.lang.LanguageVersion;
+import com.intellij.lang.ParserDefinition;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
@@ -20,13 +30,6 @@ import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.PsiDocumentManagerImpl;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.ref.Reference;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 
 public class SourceCodeFile extends DatabaseContentFile implements DatabaseFile, DocumentListener {
     private static final Key<VirtualFile> FILE_KEY = Key.create("FILE_KEY");
@@ -55,16 +58,18 @@ public class SourceCodeFile extends DatabaseContentFile implements DatabaseFile,
         }
     }
 
-    public PsiFile initializePsiFile(DatabaseFileViewProvider fileViewProvider, DBLanguage language) {
+    public PsiFile initializePsiFile(DatabaseFileViewProvider fileViewProvider, SqlLikeLanguage language) {
         ConnectionHandler connectionHandler = getConnectionHandler();
 
         DBSchemaObject underlyingObject = getObject();
         String parseRootId = getParseRootId();
         if (parseRootId != null) {
-            DBLanguageDialect languageDialect = connectionHandler.getLanguageDialect(language);
+			ParserDefinition parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
+			SqlLikeLanguageVersion<?> languageDialect = connectionHandler.getLanguageDialect(language);
             if (languageDialect != null) {
-                DBLanguageFile file = (DBLanguageFile) languageDialect.getParserDefinition().createFile(fileViewProvider);
-                file.setParseRootId(parseRootId);
+                DBLanguageFile file = (DBLanguageFile) parserDefinition.createFile(fileViewProvider);
+                file.putUserData(LanguageVersion.KEY, languageDialect);
+				file.setParseRootId(parseRootId);
                 file.setUnderlyingObject(underlyingObject);
                 fileViewProvider.forceCachedPsi(file);
                 Document document = DocumentUtil.getDocument(fileViewProvider.getVirtualFile());

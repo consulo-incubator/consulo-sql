@@ -1,5 +1,16 @@
 package com.dci.intellij.dbn.object.common;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.browser.DatabaseBrowserManager;
 import com.dci.intellij.dbn.browser.DatabaseBrowserUtils;
 import com.dci.intellij.dbn.browser.model.BrowserTreeChangeListener;
@@ -25,8 +36,8 @@ import com.dci.intellij.dbn.connection.ConnectionUtil;
 import com.dci.intellij.dbn.connection.GenericDatabaseElement;
 import com.dci.intellij.dbn.database.DatabaseCompatibilityInterface;
 import com.dci.intellij.dbn.editor.DBContentType;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 import com.dci.intellij.dbn.language.psql.PSQLLanguage;
 import com.dci.intellij.dbn.language.sql.SQLLanguage;
 import com.dci.intellij.dbn.navigation.psi.NavigationPsiCache;
@@ -54,16 +65,6 @@ import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiInvalidElementAccessException;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.Icon;
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class DBObjectImpl extends DBObjectPsiAbstraction implements DBObject, ToolTipProvider {
     private DBContentType contentType = DBContentType.NONE;
@@ -311,10 +312,10 @@ public abstract class DBObjectImpl extends DBObjectPsiAbstraction implements DBO
         return getConnectionHandler().getEnvironmentType();
     }
 
-    public DBLanguageDialect getLanguageDialect(DBLanguage language) {
+    public SqlLikeLanguageVersion<?> getLanguageDialect(SqlLikeLanguage language) {
         ConnectionHandler connectionHandler = getConnectionHandler();
         return connectionHandler == null ?
-                SQLLanguage.INSTANCE.getMainLanguageDialect() :
+				(SqlLikeLanguageVersion<?>) language.getVersions()[0] :
                 connectionHandler.getLanguageDialect(language);
     }
 
@@ -403,7 +404,7 @@ public abstract class DBObjectImpl extends DBObjectPsiAbstraction implements DBO
         return null;
     }
 
-    public LookupItemFactory getLookupItemFactory(DBLanguage language) {
+    public LookupItemFactory getLookupItemFactory(SqlLikeLanguage language) {
         if (language == SQLLanguage.INSTANCE) {
             if (sqlLookupItemFactory == null) {
                 sqlLookupItemFactory = new DBObjectLookupItemFactory(this, language);

@@ -9,9 +9,9 @@ import org.jetbrains.annotations.Nullable;
 
 public abstract class DBLanguageBraceMatcher implements PairedBraceMatcher {
     private final BracePair[] bracePairs;
-    private DBLanguage language;
+    private SqlLikeLanguage language;
 
-    public DBLanguageBraceMatcher(DBLanguage language) {
+    public DBLanguageBraceMatcher(SqlLikeLanguage language) {
         this.language = language;
         SharedTokenTypeBundle tt = language.getSharedTokenTypes();
         bracePairs = new BracePair[]{

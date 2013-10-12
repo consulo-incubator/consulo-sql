@@ -1,26 +1,16 @@
 package com.dci.intellij.dbn.language.common;
 
+import org.jdom.Document;
 import com.dci.intellij.dbn.language.common.element.ChameleonElementType;
 import com.intellij.psi.tree.TokenSet;
-import org.jdom.Document;
 
 public class TokenTypeBundle extends DBLanguageTokenTypeBundle {
-    private DBLanguage language;
-    public TokenTypeBundle(DBLanguageDialect languageDialect, Document document) {
-        super(languageDialect, document);
-        language = languageDialect.getBaseLanguage();
-    }
-
-    protected void loadDefinition(DBLanguageDialect languageDialect, Document document) {
-        super.loadDefinition(languageDialect, document);
+    public TokenTypeBundle(SqlLikeLanguage language, SqlLikeLanguageVersion<? extends SqlLikeLanguage> languageVersion, Document document) {
+        super(language, languageVersion, document);
     }
 
     public SharedTokenTypeBundle getSharedTokenTypes() {
         return language.getSharedTokenTypes();
-    }
-
-    public DBLanguageDialect getLanguageDialect() {
-        return (DBLanguageDialect) getLanguage();
     }
 
     @Override
@@ -73,7 +63,7 @@ public class TokenTypeBundle extends DBLanguageTokenTypeBundle {
 
 
     public ChameleonElementType getChameleon(DBLanguageDialectIdentifier dialectIdentifier) {
-        return getLanguageDialect().getChameleonTokenType(dialectIdentifier);
+        return languageVersion.getChameleonTokenType(dialectIdentifier);
     }
 
 }

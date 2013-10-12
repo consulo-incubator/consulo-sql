@@ -1,6 +1,6 @@
 package com.dci.intellij.dbn.vfs;
 
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.navigation.psi.NavigationPsiCache;
 import com.dci.intellij.dbn.object.common.DBObject;
 import com.intellij.lang.Language;
@@ -27,7 +27,7 @@ public class DatabaseFileViewProvider extends SingleRootFileViewProvider {
 
     @Override
     protected PsiFile getPsiInner(@NotNull Language language) {
-        if (language instanceof DBLanguage) {
+        if (language instanceof SqlLikeLanguage) {
             VirtualFile virtualFile = getVirtualFile();
             if (virtualFile instanceof DatabaseObjectFile) {
                 DatabaseObjectFile objectFile = (DatabaseObjectFile) virtualFile;
@@ -36,12 +36,12 @@ public class DatabaseFileViewProvider extends SingleRootFileViewProvider {
                 return psiCache.getPsiFile(object);
             }
 
-            DBLanguage baseLanguage = (DBLanguage) getBaseLanguage();
+            SqlLikeLanguage baseLanguage = (SqlLikeLanguage) getBaseLanguage();
             PsiFile psiFile = super.getPsiInner(baseLanguage);
             if (psiFile == null) {
                 DatabaseFile databaseFile = getDatabaseFile(virtualFile);
                 if (databaseFile != null) {
-                    return databaseFile.initializePsiFile(this, (DBLanguage) language);
+                    return databaseFile.initializePsiFile(this, (SqlLikeLanguage) language);
                 }
             } else {
                 return psiFile;

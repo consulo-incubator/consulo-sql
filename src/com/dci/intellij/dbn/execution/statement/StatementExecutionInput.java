@@ -41,7 +41,7 @@ public class StatementExecutionInput implements Disposable {
     public ExecutablePsiElement getExecutablePsiElement() {
         if (originalPsiElement == null) {
             PsiFileFactory psiFileFactory = PsiFileFactory.getInstance(executionProcessor.getProject());
-            PsiFile previewFile = psiFileFactory.createFileFromText("preview", connectionHandler.getLanguageDialect(SQLLanguage.INSTANCE), originalStatement);
+            PsiFile previewFile = psiFileFactory.createFileFromText("preview.sql", SQLLanguage.INSTANCE, connectionHandler.getLanguageDialect(SQLLanguage.INSTANCE), originalStatement);
 
             PsiElement firstChild = previewFile.getFirstChild();
             if (firstChild instanceof ExecutableBundlePsiElement) {
@@ -54,7 +54,7 @@ public class StatementExecutionInput implements Disposable {
 
     public PsiFile getPreviewFile() {
         PsiFileFactory psiFileFactory = PsiFileFactory.getInstance(executionProcessor.getProject());
-        return psiFileFactory.createFileFromText("preview", connectionHandler.getLanguageDialect(SQLLanguage.INSTANCE), executeStatement);
+        return psiFileFactory.createFileFromText("preview.sql", SQLLanguage.INSTANCE, connectionHandler.getLanguageDialect(SQLLanguage.INSTANCE), executeStatement);
     }
 
     public boolean isObsolete() {

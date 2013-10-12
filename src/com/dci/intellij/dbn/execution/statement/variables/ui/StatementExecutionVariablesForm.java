@@ -1,5 +1,20 @@
 package com.dci.intellij.dbn.execution.statement.variables.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.border.LineBorder;
+import javax.swing.event.DocumentEvent;
+
 import com.dci.intellij.dbn.common.compatibility.CompatibilityUtil;
 import com.dci.intellij.dbn.common.thread.WriteActionRunner;
 import com.dci.intellij.dbn.common.ui.DBNForm;
@@ -22,20 +37,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFileFactory;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.ui.GuiUtils;
-
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.border.LineBorder;
-import javax.swing.event.DocumentEvent;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StatementExecutionVariablesForm extends DBNFormImpl implements DBNForm {
     private List<StatementExecutionVariableValueForm> variableValueForms = new ArrayList<StatementExecutionVariableValueForm>();
@@ -135,7 +136,8 @@ public class StatementExecutionVariablesForm extends DBNFormImpl implements DBNF
             SQLFile selectStatementFile = (SQLFile)
                 psiFileFactory.createFileFromText(
                     "filter.sql",
-                    connectionHandler.getLanguageDialect(SQLLanguage.INSTANCE),
+						SQLLanguage.INSTANCE,
+						connectionHandler.getLanguageDialect(SQLLanguage.INSTANCE),
                     previewText);
 
             selectStatementFile.setActiveConnection(connectionHandler);

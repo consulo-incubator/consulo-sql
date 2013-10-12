@@ -1,5 +1,12 @@
 package com.dci.intellij.dbn.connection;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.Icon;
+
 import com.dci.intellij.dbn.browser.model.BrowserTreeNode;
 import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.common.environment.EnvironmentType;
@@ -7,8 +14,8 @@ import com.dci.intellij.dbn.common.filter.Filter;
 import com.dci.intellij.dbn.connection.config.ConnectionSettings;
 import com.dci.intellij.dbn.connection.transaction.UncommittedChangeBundle;
 import com.dci.intellij.dbn.database.DatabaseInterfaceProvider;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 import com.dci.intellij.dbn.navigation.psi.NavigationPsiCache;
 import com.dci.intellij.dbn.object.DBSchema;
 import com.dci.intellij.dbn.object.common.DBObjectBundle;
@@ -16,12 +23,6 @@ import com.dci.intellij.dbn.vfs.SQLConsoleFile;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-
-import javax.swing.Icon;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class VirtualConnectionHandler implements ConnectionHandler {
     private String id;
@@ -55,7 +56,7 @@ public class VirtualConnectionHandler implements ConnectionHandler {
         return null;
     }
 
-    public DBLanguageDialect getLanguageDialect(DBLanguage language) {
+    public SqlLikeLanguageVersion<?> getLanguageDialect(SqlLikeLanguage language) {
         return getInterfaceProvider().getLanguageDialect(language);
     }
 

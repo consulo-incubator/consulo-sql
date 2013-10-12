@@ -7,7 +7,7 @@ import com.dci.intellij.dbn.database.DatabaseDDLInterface;
 import com.dci.intellij.dbn.database.DatabaseMetadataInterface;
 import com.dci.intellij.dbn.ddl.DDLFileType;
 import com.dci.intellij.dbn.editor.DBContentType;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.language.psql.PSQLLanguage;
 import com.dci.intellij.dbn.object.DBSchema;
 import com.dci.intellij.dbn.object.common.list.DBObjectList;
@@ -107,7 +107,7 @@ public abstract class DBSchemaObjectImpl extends DBObjectImpl implements DBSchem
         return null;
     }
 
-    public DBLanguage getCodeLanguage(DBContentType contentType) {
+    public SqlLikeLanguage getCodeLanguage(DBContentType contentType) {
         return PSQLLanguage.INSTANCE;
     }
 

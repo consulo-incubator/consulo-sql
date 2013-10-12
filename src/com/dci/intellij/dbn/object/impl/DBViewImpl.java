@@ -6,7 +6,7 @@ import com.dci.intellij.dbn.ddl.DDLFileManager;
 import com.dci.intellij.dbn.ddl.DDLFileType;
 import com.dci.intellij.dbn.ddl.DDLFileTypeId;
 import com.dci.intellij.dbn.editor.DBContentType;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.language.sql.SQLLanguage;
 import com.dci.intellij.dbn.object.DBSchema;
 import com.dci.intellij.dbn.object.DBType;
@@ -120,7 +120,7 @@ public class DBViewImpl extends DBDatasetImpl implements DBView {
         return "subquery";
     }
 
-    public DBLanguage getCodeLanguage(DBContentType contentType) {
+    public SqlLikeLanguage getCodeLanguage(DBContentType contentType) {
         return SQLLanguage.INSTANCE;
     }
 

@@ -3,7 +3,7 @@ package com.dci.intellij.dbn.common.util;
 import com.dci.intellij.dbn.common.editor.document.OverrideReadonlyFragmentModificationHandler;
 import com.dci.intellij.dbn.common.thread.CommandWriteActionRunner;
 import com.dci.intellij.dbn.connection.ConnectionHandler;
-import com.dci.intellij.dbn.language.common.DBLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
 import com.dci.intellij.dbn.language.common.DBLanguageFile;
 import com.dci.intellij.dbn.language.common.DBLanguageSyntaxHighlighter;
 import com.dci.intellij.dbn.language.common.psi.PsiUtil;
@@ -33,17 +33,15 @@ public class DocumentUtil {
         PsiFile file = DocumentUtil.getFile(editor);
         if (file instanceof DBLanguageFile) {
             DBLanguageFile dbLanguageFile = (DBLanguageFile) file;
-            DBLanguage dbLanguage = dbLanguageFile.getDBLanguage();
-            if (dbLanguage != null) {
-                ConnectionHandler connectionHandler = dbLanguageFile.getActiveConnection();
-                DBLanguageSyntaxHighlighter syntaxHighlighter = connectionHandler == null ?
-                        dbLanguage.getMainLanguageDialect().getSyntaxHighlighter() :
-                        connectionHandler.getLanguageDialect(dbLanguage).getSyntaxHighlighter();
+            SqlLikeLanguage sqlLikeLanguage = (SqlLikeLanguage) dbLanguageFile.getLanguage();
+			ConnectionHandler connectionHandler = dbLanguageFile.getActiveConnection();
+			DBLanguageSyntaxHighlighter syntaxHighlighter = connectionHandler == null ?
+					sqlLikeLanguage.getFirstVersion().getSyntaxHighlighter() :
+					connectionHandler.getLanguageDialect(sqlLikeLanguage).getSyntaxHighlighter();
 
-                EditorHighlighter editorHighlighter = HighlighterFactory.createHighlighter(syntaxHighlighter, editor.getColorsScheme());
-                ((EditorEx) editor).setHighlighter(editorHighlighter);
-            }
-        }
+			EditorHighlighter editorHighlighter = HighlighterFactory.createHighlighter(syntaxHighlighter, editor.getColorsScheme());
+			((EditorEx) editor).setHighlighter(editorHighlighter);
+		}
 
         new CommandWriteActionRunner(editor.getProject()) {
             public void run() {

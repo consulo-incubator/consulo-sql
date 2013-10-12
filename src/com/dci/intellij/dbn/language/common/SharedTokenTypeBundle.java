@@ -22,8 +22,8 @@ public class SharedTokenTypeBundle extends DBLanguageTokenTypeBundle {
     private TokenSet commentTokens;
     private TokenSet stringTokens;
 
-    public SharedTokenTypeBundle(DBLanguage language) {
-        super(language, CommonUtil.loadXmlFile(SharedTokenTypeBundle.class, "db_language_common_tokens.xml"));
+    public SharedTokenTypeBundle(SqlLikeLanguage language) {
+        super(language, null, CommonUtil.loadXmlFile(SharedTokenTypeBundle.class, "db_language_common_tokens.xml"));
         whiteSpace = getTokenType("WHITE_SPACE");
         identifier = getTokenType("IDENTIFIER");
         quotedIdentifier = getTokenType("QUOTED_IDENTIFIER");

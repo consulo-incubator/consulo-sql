@@ -1,11 +1,19 @@
 package com.dci.intellij.dbn.object.common;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.browser.model.BrowserTreeNode;
 import com.dci.intellij.dbn.code.common.lookup.LookupValueProvider;
 import com.dci.intellij.dbn.common.content.DynamicContentElement;
 import com.dci.intellij.dbn.common.environment.EnvironmentType;
-import com.dci.intellij.dbn.language.common.DBLanguage;
-import com.dci.intellij.dbn.language.common.DBLanguageDialect;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguage;
+import com.dci.intellij.dbn.language.common.SqlLikeLanguageVersion;
 import com.dci.intellij.dbn.object.DBSchema;
 import com.dci.intellij.dbn.object.DBUser;
 import com.dci.intellij.dbn.object.common.list.DBObjectListContainer;
@@ -17,13 +25,6 @@ import com.dci.intellij.dbn.object.identifier.DBObjectIdentifier;
 import com.dci.intellij.dbn.object.properties.PresentableProperty;
 import com.dci.intellij.dbn.vfs.DatabaseObjectFile;
 import com.intellij.psi.PsiNamedElement;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.Icon;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public interface DBObject extends BrowserTreeNode, PsiNamedElement, DynamicContentElement, LookupValueProvider {
     List<DBObject> EMPTY_LIST = new ArrayList<DBObject>();
@@ -31,7 +32,7 @@ public interface DBObject extends BrowserTreeNode, PsiNamedElement, DynamicConte
     DBObjectType getObjectType();
     boolean isOfType(DBObjectType objectType);
 
-    DBLanguageDialect getLanguageDialect(DBLanguage language);
+	SqlLikeLanguageVersion<?> getLanguageDialect(SqlLikeLanguage language);
     
     DBObjectAttribute[] getObjectAttributes();
     DBObjectAttribute getNameAttribute();
