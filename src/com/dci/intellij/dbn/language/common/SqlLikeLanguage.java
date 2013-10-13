@@ -13,11 +13,14 @@ public abstract class SqlLikeLanguage extends Language
 	protected SqlLikeLanguage(final @NonNls String id, final @NonNls String... mimeTypes)
 	{
 		super(id, mimeTypes);
-		sharedTokenTypes = new SharedTokenTypeBundle(this);
 	}
 
 	public SharedTokenTypeBundle getSharedTokenTypes()
 	{
+		if(sharedTokenTypes == null)
+		{
+			sharedTokenTypes = new SharedTokenTypeBundle(this);
+		}
 		return sharedTokenTypes;
 	}
 

@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import com.intellij.lang.LanguageVersion;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.tree.TokenSet;
@@ -16,7 +17,7 @@ import com.intellij.psi.tree.TokenSet;
 public abstract class DBLanguageTokenTypeBundle {
     protected final Logger log = Logger.getInstance(getClass().getName());
 	protected final SqlLikeLanguage language;
-	protected final SqlLikeLanguageVersion<? extends SqlLikeLanguage> languageVersion;
+	protected final LanguageVersion<? extends SqlLikeLanguage> languageVersion;
     private SimpleTokenType[] keywords;
     private SimpleTokenType[] functions;
     private SimpleTokenType[] parameters;
@@ -39,7 +40,7 @@ public abstract class DBLanguageTokenTypeBundle {
         return tokenTypes;
     }
 
-    public DBLanguageTokenTypeBundle(SqlLikeLanguage language, SqlLikeLanguageVersion<? extends SqlLikeLanguage> languageVersion, Document document) {
+    public DBLanguageTokenTypeBundle(SqlLikeLanguage language, LanguageVersion<? extends SqlLikeLanguage> languageVersion, Document document) {
         this.language = language;
 		this.languageVersion = languageVersion;
         loadDefinition(document);
@@ -49,8 +50,10 @@ public abstract class DBLanguageTokenTypeBundle {
         return language;
     }
 
-	public SqlLikeLanguageVersion<? extends SqlLikeLanguage> getLanguageVersion() {
-		return languageVersion;
+	public SqlLikeLanguageVersion<? extends SqlLikeLanguage> getLanguageVersion()
+	{
+		assert languageVersion instanceof SqlLikeLanguageVersion;
+		return (SqlLikeLanguageVersion<? extends SqlLikeLanguage>) languageVersion;
 	}
 
     protected void loadDefinition(Document document) {
@@ -194,6 +197,12 @@ public abstract class DBLanguageTokenTypeBundle {
     public TokenSet getTokenSet(String id) {
         return tokenSets.get(id);
     }
+
+	public TokenSet getRequiredTokenSet(String id)
+	{
+		TokenSet tokenSet = tokenSets.get(id);
+		return tokenSet == null ? TokenSet.EMPTY : tokenSet;
+	}
 
     public boolean isReservedWord(String text) {
         return

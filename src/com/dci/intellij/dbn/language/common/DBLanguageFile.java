@@ -46,7 +46,7 @@ public abstract class DBLanguageFile extends PsiFileBase implements FileConnecti
 
     public DBLanguageFile(FileViewProvider viewProvider, DBLanguageFileType fileType, SqlLikeLanguage language) {
         super(viewProvider, language);
-
+		this.fileType = fileType;
         parserDefinition = LanguageParserDefinitions.INSTANCE.forLanguage(language);
         if (parserDefinition == null) {
             throw new RuntimeException("PsiFileBase: language.getParserDefinition() returned null.");

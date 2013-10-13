@@ -1,6 +1,7 @@
 package com.dci.intellij.dbn.language.common;
 
 import com.dci.intellij.dbn.common.util.CommonUtil;
+import com.intellij.lang.BaseLanguageVersion;
 import com.intellij.psi.tree.TokenSet;
 
 public class SharedTokenTypeBundle extends DBLanguageTokenTypeBundle {
@@ -23,7 +24,7 @@ public class SharedTokenTypeBundle extends DBLanguageTokenTypeBundle {
     private TokenSet stringTokens;
 
     public SharedTokenTypeBundle(SqlLikeLanguage language) {
-        super(language, null, CommonUtil.loadXmlFile(SharedTokenTypeBundle.class, "db_language_common_tokens.xml"));
+        super(language, new BaseLanguageVersion<SqlLikeLanguage>("DUMMY", language), CommonUtil.loadXmlFile(SharedTokenTypeBundle.class, "db_language_common_tokens.xml"));
         whiteSpace = getTokenType("WHITE_SPACE");
         identifier = getTokenType("IDENTIFIER");
         quotedIdentifier = getTokenType("QUOTED_IDENTIFIER");
