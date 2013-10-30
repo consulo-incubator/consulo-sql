@@ -1,18 +1,20 @@
 package com.dci.intellij.dbn.debugger.frame;
 
+import java.sql.SQLException;
+
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.common.util.StringUtil;
 import com.dci.intellij.dbn.database.common.debug.VariableInfo;
 import com.dci.intellij.dbn.debugger.DBProgramDebugProcess;
-import com.intellij.xdebugger.frame.XValue;
+import com.intellij.xdebugger.frame.XNamedValue;
 import com.intellij.xdebugger.frame.XValueModifier;
 import com.intellij.xdebugger.frame.XValueNode;
-import org.jetbrains.annotations.NotNull;
+import com.intellij.xdebugger.frame.XValuePlace;
 
-import javax.swing.Icon;
-import java.sql.SQLException;
-
-public class DBProgramDebugValue extends XValue implements Comparable<DBProgramDebugValue>{
+public class DBProgramDebugValue extends XNamedValue implements Comparable<DBProgramDebugValue>{
     private DBProgramDebugValueModifier modifier;
     private DBProgramDebugProcess debugProcess;
     private String textPresentation;
@@ -22,7 +24,8 @@ public class DBProgramDebugValue extends XValue implements Comparable<DBProgramD
     private int frameIndex;
 
     public DBProgramDebugValue(DBProgramDebugProcess debugProcess, String variableName, Icon icon, int frameIndex) {
-        this.variableName = variableName;
+		super(variableName);
+		this.variableName = variableName;
         this.debugProcess = debugProcess;
         this.icon = icon == null ? Icons.DBO_VARIABLE : icon;
         this.frameIndex = frameIndex;
@@ -62,12 +65,13 @@ public class DBProgramDebugValue extends XValue implements Comparable<DBProgramD
         return errorMessage;
     }
 
-    @Override
-    public void computePresentation(@NotNull XValueNode node) {
-        node.setPresentation(variableName, icon, errorMessage, textPresentation, false);
-    }
+	@Override
+	public void computePresentation(@NotNull XValueNode xValueNode, @NotNull XValuePlace xValuePlace)
+	{
+		xValueNode.setPresentation(icon, errorMessage, textPresentation, false);
+	}
 
-    @Override
+	@Override
     public XValueModifier getModifier() {
         if (modifier == null) modifier = new DBProgramDebugValueModifier(this);
         return modifier;

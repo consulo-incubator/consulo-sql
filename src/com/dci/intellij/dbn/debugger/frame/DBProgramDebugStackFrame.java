@@ -1,5 +1,11 @@
 package com.dci.intellij.dbn.debugger.frame;
 
+import gnu.trove.THashMap;
+
+import java.util.Map;
+import java.util.Set;
+
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.common.util.DocumentUtil;
 import com.dci.intellij.dbn.database.common.debug.DebuggerRuntimeInfo;
 import com.dci.intellij.dbn.debugger.DBProgramDebugProcess;
@@ -19,16 +25,8 @@ import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
 import com.intellij.xdebugger.frame.XCompositeNode;
 import com.intellij.xdebugger.frame.XStackFrame;
-import com.intellij.xdebugger.frame.XValue;
+import com.intellij.xdebugger.frame.XValueChildrenList;
 import com.intellij.xdebugger.impl.XSourcePositionImpl;
-import gnu.trove.THashMap;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class DBProgramDebugStackFrame extends XStackFrame {
     private DBProgramDebugProcess debugProcess;
@@ -103,15 +101,15 @@ public class DBProgramDebugStackFrame extends XStackFrame {
         int offset = document.getLineStartOffset(sourcePosition.getLine());
         Set<BasePsiElement> variables = psiFile.lookupVariableDefinition(offset);
 
-        List<DBProgramDebugValue> values = new ArrayList<DBProgramDebugValue>();
+		XValueChildrenList values = new XValueChildrenList();
         for (final BasePsiElement basePsiElement : variables) {
             String variableName = basePsiElement.getText();
             DBProgramDebugValue value = new DBProgramDebugValue(debugProcess, variableName, basePsiElement.getIcon(true), index);
             values.add(value);
             valuesMap.put(variableName.toLowerCase(), value);
         }
-        Collections.sort(values);
-        node.addChildren(new ArrayList<XValue>(values), true);
+
+        node.addChildren(values, true);
     }
 }
 

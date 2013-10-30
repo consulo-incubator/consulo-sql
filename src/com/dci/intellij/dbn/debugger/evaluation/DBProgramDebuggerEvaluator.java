@@ -1,5 +1,7 @@
 package com.dci.intellij.dbn.debugger.evaluation;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.debugger.frame.DBProgramDebugStackFrame;
 import com.dci.intellij.dbn.debugger.frame.DBProgramDebugValue;
 import com.dci.intellij.dbn.language.common.psi.IdentifierPsiElement;
@@ -9,9 +11,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
+import com.intellij.xdebugger.XSourcePosition;
 import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class DBProgramDebuggerEvaluator extends XDebuggerEvaluator {
     private DBProgramDebugStackFrame frame;
@@ -20,15 +21,13 @@ public class DBProgramDebuggerEvaluator extends XDebuggerEvaluator {
         this.frame = frame;
     }
 
-    public boolean evaluateCondition(@NotNull String expression) {
-        return false;
-    }
+	@Override
+	public void evaluate(@NotNull String s, @NotNull XEvaluationCallback xEvaluationCallback, @Nullable XSourcePosition xSourcePosition)
+	{
 
-    public String evaluateMessage(@NotNull String expression) {
-        return null;
-    }
+	}
 
-    public void evaluate(@NotNull String expression, XEvaluationCallback callback) {
+	public void evaluate(@NotNull String expression, XEvaluationCallback callback) {
         DBProgramDebugValue value = frame.getValue(expression);
         if (value == null) {
             value = new DBProgramDebugValue(frame.getDebugProcess(), expression, null, frame.getIndex());
