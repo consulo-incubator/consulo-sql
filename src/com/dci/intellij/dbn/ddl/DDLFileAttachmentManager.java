@@ -1,5 +1,20 @@
 package com.dci.intellij.dbn.ddl;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
+
+import org.jdom.Element;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.common.AbstractProjectComponent;
 import com.dci.intellij.dbn.common.Constants;
 import com.dci.intellij.dbn.common.thread.WriteActionRunner;
@@ -35,20 +50,6 @@ import com.intellij.openapi.vfs.VirtualFileListener;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.openapi.vfs.VirtualFileMoveEvent;
 import com.intellij.openapi.vfs.VirtualFilePropertyEvent;
-import org.jdom.Element;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DDLFileAttachmentManager extends AbstractProjectComponent implements VirtualFileListener, JDOMExternalizable {
 
@@ -232,7 +233,7 @@ public class DDLFileAttachmentManager extends AbstractProjectComponent implement
         DDLFileNameProvider fileNameProvider = getDDLFileNameProvider(object);
 
         if (fileNameProvider != null) {
-            VirtualFile[] selectedDirectories = FileChooser.chooseFiles(project, descriptor);
+            VirtualFile[] selectedDirectories = FileChooser.chooseFiles(descriptor, project, null);
             if (selectedDirectories.length > 0) {
                 final String fileName = fileNameProvider.getFileName();
                 final VirtualFile parentDirectory = selectedDirectories[0];

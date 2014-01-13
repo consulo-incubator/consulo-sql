@@ -10,6 +10,7 @@ import com.intellij.find.editorHeaderActions.Utils;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.ex.EditorEx;
 import com.intellij.openapi.editor.impl.DocumentImpl;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.testFramework.LightVirtualFile;
 import com.intellij.ui.components.JBList;
@@ -20,11 +21,11 @@ public class CompatibilityUtil {
         return editorEx.getBackgroundColor();
     }
 
-    public static void stripDocumentTrailingSpaces(Document document) {
+    public static void stripDocumentTrailingSpaces(Project project, Document document) {
         if (document instanceof DocumentImpl) {
             DocumentImpl documentImpl = (DocumentImpl) document;
             //documentImpl.stripTrailingSpaces(true);
-            documentImpl.stripTrailingSpaces();
+            documentImpl.stripTrailingSpaces(project);
         }
         
     }

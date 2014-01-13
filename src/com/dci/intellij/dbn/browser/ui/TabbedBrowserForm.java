@@ -1,5 +1,14 @@
 package com.dci.intellij.dbn.browser.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.util.Vector;
+
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.JPanel;
+
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.browser.model.BrowserTreeNode;
 import com.dci.intellij.dbn.common.environment.EnvironmentChangeListener;
 import com.dci.intellij.dbn.common.environment.EnvironmentType;
@@ -12,14 +21,6 @@ import com.dci.intellij.dbn.connection.ConnectionManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.TabsListener;
-import org.jetbrains.annotations.Nullable;
-
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.util.Vector;
 
 public class TabbedBrowserForm extends DatabaseBrowserForm{
     private TabbedPane connectionTabs;
@@ -44,7 +45,13 @@ public class TabbedBrowserForm extends DatabaseBrowserForm{
             public void beforeSelectionChanged(TabInfo oldSelection, TabInfo newSelection) {
             }
 
-            public void tabsMoved() {
+			@Override
+			public void tabRemoved(TabInfo tabInfo)
+			{
+
+			}
+
+			public void tabsMoved() {
 
             }
         });

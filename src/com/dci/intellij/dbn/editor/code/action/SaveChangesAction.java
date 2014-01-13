@@ -28,7 +28,7 @@ public class SaveChangesAction extends AbstractSourceCodeEditorAction {
         new WriteActionRunner() {
             public void run() {
                 Document document = editor.getDocument();
-                CompatibilityUtil.stripDocumentTrailingSpaces(document);
+                CompatibilityUtil.stripDocumentTrailingSpaces(project, document);
                 SourceCodeEditorManager.getInstance(project).updateSourceToDatabase(editor, virtualFile);
             }
         }.start();
