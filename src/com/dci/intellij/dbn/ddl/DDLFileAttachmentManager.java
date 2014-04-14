@@ -226,9 +226,7 @@ public class DDLFileAttachmentManager extends AbstractProjectComponent implement
             contentRoots = rootManager.getContentRoots();
         }
         descriptor.setIsTreeRootVisible(contentRoots.length == 1);
-        for (VirtualFile contentRoot : contentRoots) {
-            descriptor.addRoot(contentRoot);
-        }
+        descriptor.setRoots(contentRoots);
 
         DDLFileNameProvider fileNameProvider = getDDLFileNameProvider(object);
 
