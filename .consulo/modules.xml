@@ -13,48 +13,40 @@
           </content>
           <orderEntry type="module-extension-sdk" extension-id="java" />
           <orderEntry type="module-extension-sdk" extension-id="consulo-plugin" />
-          <orderEntry type="sourceFolder" forTests="false" />
+          <orderEntry type="sourceFolder" />
           <orderEntry type="module-library">
             <library name="consulo:Java Platform">
-              <CLASSES>
+              <binaries>
                 <root url="jar://$APPLICATION_HOME_DIR$/plugins/java-platform/lib/java-compiler-artifact-impl.jar!/" />
                 <root url="jar://$APPLICATION_HOME_DIR$/plugins/java-platform/lib/java-platform.jar!/" />
                 <root url="jar://$APPLICATION_HOME_DIR$/plugins/java-platform/lib/java-rt.jar!/" />
                 <root url="jar://$APPLICATION_HOME_DIR$/plugins/java-platform/lib/jdk-annotations.jar!/" />
-              </CLASSES>
-              <DOCUMENTATION />
-              <SOURCES />
+              </binaries>
             </library>
           </orderEntry>
           <orderEntry type="module-library">
             <library name="consulo:Java">
-              <CLASSES>
+              <binaries>
                 <root url="jar://$APPLICATION_HOME_DIR$/plugins/java/lib/java-copyright.jar!/" />
                 <root url="jar://$APPLICATION_HOME_DIR$/plugins/java/lib/java-debugger-api.jar!/" />
                 <root url="jar://$APPLICATION_HOME_DIR$/plugins/java/lib/java-debugger-impl.jar!/" />
                 <root url="jar://$APPLICATION_HOME_DIR$/plugins/java/lib/java-intellilang.jar!/" />
                 <root url="jar://$APPLICATION_HOME_DIR$/plugins/java/lib/java.jar!/" />
-              </CLASSES>
-              <DOCUMENTATION />
-              <SOURCES />
+              </binaries>
             </library>
           </orderEntry>
           <orderEntry type="module-library">
             <library>
-              <CLASSES>
+              <binaries>
                 <root url="jar://$MODULE_DIR$/lib/poi-3.7.jar!/" />
-              </CLASSES>
-              <DOCUMENTATION />
-              <SOURCES />
+              </binaries>
             </library>
           </orderEntry>
           <orderEntry type="module-library">
             <library>
-              <CLASSES>
+              <binaries>
                 <root url="jar://$MODULE_DIR$/lib/ojdbc6.jar!/" />
-              </CLASSES>
-              <DOCUMENTATION />
-              <SOURCES />
+              </binaries>
             </library>
           </orderEntry>
         </module-layer>
@@ -62,4 +54,3 @@
     </modules>
   </component>
 </project>
-
