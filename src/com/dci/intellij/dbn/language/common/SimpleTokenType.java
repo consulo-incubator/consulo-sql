@@ -20,10 +20,12 @@ public class SimpleTokenType extends IElementType implements TokenType {
     private int idx;
     private int hashCode;
     private FormattingDefinition formatting;
+	private LanguageVersion<?> myLanguageVersion;
 
     public SimpleTokenType(@NotNull @NonNls String debugName, Language language, @Nullable LanguageVersion languageVersion) {
-        super(debugName, language, languageVersion);
-    }
+        super(debugName, language);
+		myLanguageVersion = languageVersion;
+	}
 
     /*public SimpleTokenType(SimpleTokenType source, Language language) {
         super(source.toString(), language);
@@ -38,7 +40,7 @@ public class SimpleTokenType extends IElementType implements TokenType {
     }*/
 
     public SimpleTokenType(Element element, Language language, LanguageVersion languageVersion) {
-        super(element.getAttributeValue("id"), language, languageVersion);
+        super(element.getAttributeValue("id"), language);
         id = element.getAttributeValue("id");
         value = element.getAttributeValue("value");
         description = element.getAttributeValue("description");
@@ -62,6 +64,11 @@ public class SimpleTokenType extends IElementType implements TokenType {
 		}
 
 		formatting = FormattingDefinitionFactory.loadDefinition(element);
+    }
+
+    public LanguageVersion<?> getLanguageVersion()
+    {
+        return myLanguageVersion;
     }
 
     public void setDefaultFormatting(FormattingDefinition defaultFormatting) {

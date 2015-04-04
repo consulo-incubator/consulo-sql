@@ -43,56 +43,67 @@ public class ChameleonTokenType extends SimpleTokenType implements ElementType
 		return injectedLanguage;
 	}
 
+	@Override
 	public String getDebugName()
 	{
 		return toString();
 	}
 
+	@Override
 	public Icon getIcon()
 	{
 		return null;
 	}
 
+	@Override
 	public ElementType getParent()
 	{
 		return null;
 	}
 
+	@Override
 	public ElementTypeLookupCache getLookupCache()
 	{
 		return null;
 	}
 
+	@Override
 	public ElementTypeParser getParser()
 	{
 		return null;
 	}
 
+	@Override
 	public boolean is(ElementTypeAttribute attribute)
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isLeaf()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isVirtualObject()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isVirtualObjectInsideLookup()
 	{
 		return false;
 	}
 
+	@Override
 	public DBObjectType getVirtualObjectType()
 	{
 		return null;
 	}
 
+	@Override
 	public PsiElement createPsiElement(ASTNode astNode)
 	{
 		return new ASTWrapperPsiElement(astNode);
@@ -103,11 +114,13 @@ public class ChameleonTokenType extends SimpleTokenType implements ElementType
 		return null;
 	}
 
+	@Override
 	public ElementTypeBundle getElementBundle()
 	{
 		return null;
 	}
 
+	@Override
 	public void registerVirtualObject(DBObjectType objectType)
 	{
 

@@ -41,10 +41,12 @@ public abstract class AbstractElementType extends IElementType implements Elemen
     private boolean isVirtualObjectInsideLookup;
     private ElementTypeAttributesBundle attributes = ElementTypeAttributesBundle.EMPTY;
     private ElementTypeLogger logger = new ElementTypeLogger(this);
+	private SqlLikeLanguageVersion<?> myLanguageVersion;
 
     public AbstractElementType(ElementTypeBundle bundle, ElementType parent, String id, @Nullable String description) {
-        super(id, bundle.getLanguage(), bundle.getLanguageVersion(), false);
+        super(id, bundle.getLanguage(), false);
         this.id = id;
+		myLanguageVersion = bundle.getLanguageVersion();
         this.description = description;
         this.bundle = bundle;
         this.parent = parent;
@@ -53,13 +55,14 @@ public abstract class AbstractElementType extends IElementType implements Elemen
     }
 
     public AbstractElementType(ElementTypeBundle bundle, ElementType parent, String id, Element def) throws ElementTypeDefinitionException {
-        super(id, bundle.getLanguage(), bundle.getLanguageVersion(), false);
+        super(id, bundle.getLanguage(), false);
         this.id = def.getAttributeValue("id");
         if (!id.equals(this.id)) {
             this.id = id;
             def.setAttribute("id", this.id);
             bundle.markIndexesDirty();
         }
+		myLanguageVersion = bundle.getLanguageVersion();
         this.bundle = bundle;
         this.parent = parent;
         this.lookupCache = createLookupCache();
@@ -71,6 +74,7 @@ public abstract class AbstractElementType extends IElementType implements Elemen
 
     protected abstract ElementTypeParser createParser();
 
+    @Override
     public void setDefaultFormatting(FormattingDefinition defaultFormatting) {
         formatting = FormattingDefinitionFactory.mergeDefinitions(formatting, defaultFormatting);
     }
@@ -95,10 +99,12 @@ public abstract class AbstractElementType extends IElementType implements Elemen
         if (iconKey != null)  icon = Icons.getIcon(iconKey);
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -107,18 +113,22 @@ public abstract class AbstractElementType extends IElementType implements Elemen
         this.description = description;
     }
 
+    @Override
     public Icon getIcon() {
         return icon;
     }
 
+    @Override
     public ElementType getParent() {
         return parent;
     }
 
+    @Override
     public ElementTypeLookupCache getLookupCache() {
         return lookupCache;
     }
 
+    @Override
     public @NotNull ElementTypeParser getParser() {
         return parser;
     }
@@ -127,18 +137,22 @@ public abstract class AbstractElementType extends IElementType implements Elemen
         return logger;
     }
 
+    @Override
     public boolean is(ElementTypeAttribute attribute) {
         return attributes.is(attribute);
     }
 
+    @Override
     public ElementTypeAttributesBundle getAttributes() {
         return attributes;
     }
 
+    @Override
     public FormattingDefinition getFormatting() {
         return formatting;
     }
 
+    @Override
     @NotNull
     public SqlLikeLanguage getLanguage() {
         return (SqlLikeLanguage) super.getLanguage();
@@ -146,13 +160,15 @@ public abstract class AbstractElementType extends IElementType implements Elemen
 
     @Override
     public SqlLikeLanguageVersion<? extends SqlLikeLanguage> getLanguageVersion() {
-        return (SqlLikeLanguageVersion<? extends SqlLikeLanguage>) super.getLanguageVersion();
+        return myLanguageVersion;
     }
 
+    @Override
     public ElementTypeBundle getElementBundle() {
         return bundle;
     }
 
+    @Override
     public String toString() {
         return getId();
     }
@@ -162,6 +178,7 @@ public abstract class AbstractElementType extends IElementType implements Elemen
         return getId().hashCode();
     }
 
+    @Override
     public void registerVirtualObject(DBObjectType objectType) {
         getLookupCache().registerVirtualObject(objectType);
     }
@@ -169,14 +186,17 @@ public abstract class AbstractElementType extends IElementType implements Elemen
     /*********************************************************
      *                  Virtual Object                       *
      *********************************************************/
+    @Override
     public boolean isVirtualObject() {
         return virtualObjectType != null;
     }
 
+    @Override
     public DBObjectType getVirtualObjectType() {
         return virtualObjectType;
     }
 
+    @Override
     public boolean isVirtualObjectInsideLookup() {
         return isVirtualObjectInsideLookup;
     }

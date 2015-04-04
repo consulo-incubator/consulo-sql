@@ -20,9 +20,12 @@ import com.intellij.psi.tree.ILazyParseableElementType;
 
 public class ChameleonElementType extends ILazyParseableElementType implements ElementType, TokenType
 {
+	private SqlLikeLanguageVersion<?> myLanguageVersion;
+
 	public ChameleonElementType(SqlLikeLanguageVersion languageVersion)
 	{
-		super("chameleon (" + languageVersion + ")", languageVersion.getLanguage(), languageVersion);
+		super("chameleon (" + languageVersion + ")", languageVersion.getLanguage());
+		myLanguageVersion = languageVersion;
 	}
 
 	@NotNull
@@ -35,39 +38,46 @@ public class ChameleonElementType extends ILazyParseableElementType implements E
 	@Override
 	public SqlLikeLanguageVersion<?> getLanguageVersion()
 	{
-		return (SqlLikeLanguageVersion<?>) super.getLanguageVersion();
+		return myLanguageVersion;
 	}
 
+	@Override
 	public String getId()
 	{
 		return "";
 	}
 
+	@Override
 	public String getDescription()
 	{
 		return getDebugName();
 	}
 
+	@Override
 	public String getDebugName()
 	{
 		return toString();
 	}
 
+	@Override
 	public Icon getIcon()
 	{
 		return null;
 	}
 
+	@Override
 	public ElementType getParent()
 	{
 		return null;
 	}
 
+	@Override
 	public ElementTypeLookupCache getLookupCache()
 	{
 		return null;
 	}
 
+	@Override
 	public ElementTypeParser getParser()
 	{
 		return null;
@@ -90,31 +100,37 @@ public class ChameleonElementType extends ILazyParseableElementType implements E
 		return null;
 	}
 
+	@Override
 	public boolean is(ElementTypeAttribute attribute)
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isLeaf()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isVirtualObject()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isVirtualObjectInsideLookup()
 	{
 		return false;
 	}
 
+	@Override
 	public DBObjectType getVirtualObjectType()
 	{
 		return null;
 	}
 
+	@Override
 	public PsiElement createPsiElement(ASTNode astNode)
 	{
 		return new ChameleonPsiElement(astNode, this);
@@ -125,95 +141,114 @@ public class ChameleonElementType extends ILazyParseableElementType implements E
 		return null;
 	}
 
+	@Override
 	public ElementTypeBundle getElementBundle()
 	{
 		return null;
 	}
 
+	@Override
 	public void registerVirtualObject(DBObjectType objectType)
 	{
 	}
 
+	@Override
 	public int getIdx()
 	{
 		return 0;
 	}
 
+	@Override
 	public String getValue()
 	{
 		return null;
 	}
 
+	@Override
 	public String getTypeName()
 	{
 		return null;
 	}
 
+	@Override
 	public boolean isSuppressibleReservedWord()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isIdentifier()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isVariable()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isQuotedIdentifier()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isKeyword()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isFunction()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isParameter()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isDataType()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isCharacter()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isOperator()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isChameleon()
 	{
 		return true;
 	}
 
+	@Override
 	public boolean isReservedWord()
 	{
 		return false;
 	}
 
+	@Override
 	public boolean isParserLandmark()
 	{
 		return false;
 	}
 
+	@Override
 	public TokenTypeIdentifier getTokenTypeIdentifier()
 	{
 		return null;
