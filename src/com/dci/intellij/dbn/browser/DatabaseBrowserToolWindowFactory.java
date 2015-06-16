@@ -10,7 +10,6 @@ import com.dci.intellij.dbn.browser.action.OpenSettingsAction;
 import com.dci.intellij.dbn.browser.action.ShowObjectPropertiesAction;
 import com.dci.intellij.dbn.browser.ui.BrowserToolWindowForm;
 import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.AnSeparator;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
@@ -58,8 +57,8 @@ public class DatabaseBrowserToolWindowFactory implements ToolWindowFactory, Dumb
 		forwardAction.getTemplatePresentation().setHoveredIcon(AllIcons.General.ComboArrowRightPassive);
 
 		toolWindowEx.setTitleActions(
-				backAction, forwardAction, AnSeparator.getInstance(),
-				openSettingsAction, showObjectPropertiesAction, AnSeparator.getInstance(),
+				backAction, forwardAction,
+				openSettingsAction, showObjectPropertiesAction,
 				expandTreeAction, collapseTreeAction);
 
 		AutoscrollToEditorAction autoscrollToEditorAction = new AutoscrollToEditorAction();
