@@ -1,13 +1,5 @@
 package com.dci.intellij.dbn.navigation.psi;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.swing.Icon;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.common.dispose.DisposeUtil;
 import com.dci.intellij.dbn.connection.ConnectionHandler;
 import com.dci.intellij.dbn.language.common.psi.EmptySearchScope;
@@ -20,27 +12,25 @@ import com.intellij.lang.LanguageVersion;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiFileSystemItem;
-import com.intellij.psi.PsiInvalidElementAccessException;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiReference;
-import com.intellij.psi.ResolveState;
+import com.intellij.psi.*;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiElementProcessor;
 import com.intellij.psi.search.SearchScope;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.LanguageVersionUtil;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class DBConnectionPsiDirectory implements PsiDirectory, Disposable {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+public class DBConnectionPsiDirectory extends UserDataHolderBase implements PsiDirectory, Disposable {
     private DatabaseConnectionFile virtualFile;
 
     public DBConnectionPsiDirectory(ConnectionHandler connectionHandler) {
@@ -273,14 +263,6 @@ public class DBConnectionPsiDirectory implements PsiDirectory, Disposable {
         return new PsiReference[0];  
     }
 
-    public <T> T getCopyableUserData(Key<T> key) {
-        return null;  
-    }
-
-    public <T> void putCopyableUserData(Key<T> key, T value) {
-        
-    }
-
     public boolean processDeclarations(@NotNull PsiScopeProcessor processor, @NotNull ResolveState state, @Nullable PsiElement lastParent, @NotNull PsiElement place) {
         return false;  
     }
@@ -365,18 +347,6 @@ public class DBConnectionPsiDirectory implements PsiDirectory, Disposable {
     }
 
     public void checkSetName(String name) throws IncorrectOperationException {
-        
-    }
-
-    public Icon getIcon(int flags) {
-        return virtualFile.getIcon();
-    }
-
-    public <T> T getUserData(@NotNull Key<T> key) {
-        return null;  
-    }
-
-    public <T> void putUserData(@NotNull Key<T> key, @Nullable T value) {
         
     }
 }
