@@ -28,7 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.browser.model.BrowserTreeModel;
 import com.dci.intellij.dbn.browser.model.BrowserTreeNode;
 import com.dci.intellij.dbn.browser.model.TabbedBrowserTreeModel;
-import com.dci.intellij.dbn.browser.options.BrowserDisplayMode;
 import com.dci.intellij.dbn.browser.options.DatabaseBrowserSettings;
 import com.dci.intellij.dbn.browser.options.ObjectFilterChangeListener;
 import com.dci.intellij.dbn.browser.ui.BrowserToolWindowForm;
@@ -209,9 +208,9 @@ public class DatabaseBrowserManager extends AbstractProjectComponent implements 
     public void dispose() {
     }
 
+	@Deprecated
     public boolean isTabbedMode() {
-        DatabaseBrowserSettings browserSettings = DatabaseBrowserSettings.getInstance(getProject());
-        return browserSettings.getGeneralSettings().getDisplayMode() == BrowserDisplayMode.TABBED;
+        return false;
     }
 
 

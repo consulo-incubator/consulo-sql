@@ -16,7 +16,11 @@
 
 package com.dci.intellij.dbn.browser.options.ui;
 
-import com.dci.intellij.dbn.browser.options.BrowserDisplayMode;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
 import com.dci.intellij.dbn.browser.options.DatabaseBrowserGeneralSettings;
 import com.dci.intellij.dbn.browser.options.ObjectDisplaySettingsListener;
 import com.dci.intellij.dbn.common.event.EventManager;
@@ -25,16 +29,8 @@ import com.dci.intellij.dbn.common.options.ui.ConfigurationEditorUtil;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
-
 public class DatabaseBrowserGeneralSettingsForm extends ConfigurationEditorForm<DatabaseBrowserGeneralSettings> {
     private JPanel mainPanel;
-    private JRadioButton simpleRadioButton;
-    private JRadioButton tabbedRadioButton;
     private JTextField navigationHistorySizeTextField;
     private JCheckBox showObjectDetailsCheckBox;
 
@@ -44,8 +40,6 @@ public class DatabaseBrowserGeneralSettingsForm extends ConfigurationEditorForm<
         updateBorderTitleForeground(mainPanel);
         resetChanges();
 
-        registerComponent(simpleRadioButton);
-        registerComponent(tabbedRadioButton);
         registerComponent(showObjectDetailsCheckBox);
     }
 
@@ -57,11 +51,6 @@ public class DatabaseBrowserGeneralSettingsForm extends ConfigurationEditorForm<
         DatabaseBrowserGeneralSettings configuration = getConfiguration();
         boolean repaintTree = configuration.isModified();
         
-        BrowserDisplayMode displayMode =
-                simpleRadioButton.isSelected() ? BrowserDisplayMode.SIMPLE :
-                tabbedRadioButton.isSelected() ? BrowserDisplayMode.TABBED :
-                BrowserDisplayMode.SIMPLE;
-        configuration.setDisplayMode(displayMode);
 
         ConfigurationEditorUtil.validateIntegerInputValue(navigationHistorySizeTextField, "Navigation history size", 0, 1000, "");
         configuration.getNavigationHistorySize().applyChanges(navigationHistorySizeTextField);
@@ -77,9 +66,6 @@ public class DatabaseBrowserGeneralSettingsForm extends ConfigurationEditorForm<
 
     public void resetChanges() {
         DatabaseBrowserGeneralSettings configuration = getConfiguration();
-        BrowserDisplayMode displayMode = configuration.getDisplayMode();
-        if (displayMode == BrowserDisplayMode.SIMPLE) simpleRadioButton.setSelected(true); else
-        if (displayMode == BrowserDisplayMode.TABBED) tabbedRadioButton.setSelected(true);
 
         configuration.getNavigationHistorySize().resetChanges(navigationHistorySizeTextField);
         configuration.getShowObjectDetails().resetChanges(showObjectDetailsCheckBox);
