@@ -27,7 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.browser.model.BrowserTreeModel;
 import com.dci.intellij.dbn.browser.model.BrowserTreeNode;
-import com.dci.intellij.dbn.browser.model.TabbedBrowserTreeModel;
 import com.dci.intellij.dbn.browser.options.DatabaseBrowserSettings;
 import com.dci.intellij.dbn.browser.options.ObjectFilterChangeListener;
 import com.dci.intellij.dbn.browser.ui.BrowserToolWindowForm;
@@ -79,10 +78,7 @@ public class DatabaseBrowserManager extends AbstractProjectComponent implements 
         DatabaseBrowserTree activeBrowserTree = getActiveBrowserTree();
         if (activeBrowserTree != null) {
             BrowserTreeModel browserTreeModel = activeBrowserTree.getModel();
-            if (browserTreeModel instanceof TabbedBrowserTreeModel) {
-                TabbedBrowserTreeModel tabbedBrowserTreeModel = (TabbedBrowserTreeModel) browserTreeModel;
-                return tabbedBrowserTreeModel.getConnectionHandler();
-            }
+
 
             BrowserTreeNode browserTreeNode = activeBrowserTree.getSelectedNode();
             if (browserTreeNode != null) {

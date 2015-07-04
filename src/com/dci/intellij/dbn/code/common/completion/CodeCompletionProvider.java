@@ -64,12 +64,6 @@ import com.intellij.psi.PsiFile;
 import com.intellij.util.ProcessingContext;
 
 public class CodeCompletionProvider extends CompletionProvider<CompletionParameters> {
-    public static final CodeCompletionProvider INSTANCE = new CodeCompletionProvider();
-
-
-    public CodeCompletionProvider() {
-        super();
-    }
 
     @Override
     protected void addCompletions(

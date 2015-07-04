@@ -16,23 +16,20 @@
 
 package com.dci.intellij.dbn.browser.ui;
 
-import com.dci.intellij.dbn.browser.model.BrowserTreeModel;
-import com.dci.intellij.dbn.browser.model.BrowserTreeNode;
-import com.dci.intellij.dbn.browser.model.SimpleBrowserTreeModel;
-import com.dci.intellij.dbn.browser.model.TabbedBrowserTreeModel;
-import com.dci.intellij.dbn.browser.options.ObjectDisplaySettingsListener;
-import com.dci.intellij.dbn.common.event.EventManager;
-import com.dci.intellij.dbn.common.ui.tree.TreeEventType;
-import com.dci.intellij.dbn.connection.ConnectionHandler;
-import com.dci.intellij.dbn.connection.ConnectionManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.util.IncorrectOperationException;
-
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ToolTipManager;
 import javax.swing.border.EmptyBorder;
+
+import com.dci.intellij.dbn.browser.model.BrowserTreeModel;
+import com.dci.intellij.dbn.browser.model.BrowserTreeNode;
+import com.dci.intellij.dbn.browser.model.SimpleBrowserTreeModel;
+import com.dci.intellij.dbn.browser.options.ObjectDisplaySettingsListener;
+import com.dci.intellij.dbn.common.event.EventManager;
+import com.dci.intellij.dbn.common.ui.tree.TreeEventType;
+import com.dci.intellij.dbn.connection.ConnectionManager;
+import com.intellij.openapi.project.Project;
 
 public class SimpleBrowserForm extends DatabaseBrowserForm{
     private JPanel mainPanel;
@@ -41,10 +38,6 @@ public class SimpleBrowserForm extends DatabaseBrowserForm{
 
     public SimpleBrowserForm(Project project) {
         this(new SimpleBrowserTreeModel(project, ConnectionManager.getInstance(project).getConnectionBundles()));
-    }
-
-    public SimpleBrowserForm(ConnectionHandler connectionHandler) {
-        this(new TabbedBrowserTreeModel(connectionHandler));
     }
 
     private SimpleBrowserForm(BrowserTreeModel treeModel) {
@@ -59,14 +52,6 @@ public class SimpleBrowserForm extends DatabaseBrowserForm{
         EventManager.subscribe(project, ObjectDisplaySettingsListener.TOPIC, objectDisplaySettingsListener);
     }
     
-    public ConnectionHandler getConnectionHandler(){
-        if (browserTree.getModel() instanceof TabbedBrowserTreeModel) {
-            TabbedBrowserTreeModel treeModel = (TabbedBrowserTreeModel) browserTree.getModel();
-            return treeModel.getConnectionHandler();
-        }
-        throw new IncorrectOperationException("Multiple connection tabs can not return one connection.");
-    }
-
     public JComponent getComponent() {
         return mainPanel;
     }
