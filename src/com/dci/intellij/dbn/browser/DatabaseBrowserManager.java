@@ -57,7 +57,7 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 
 public class DatabaseBrowserManager extends AbstractProjectComponent implements JDOMExternalizable{
-    public static final String TOOL_WINDOW_ID = "Data Source";
+    public static final String TOOL_WINDOW_ID = "Database";
 
     private BooleanSetting autoscrollFromEditor = new BooleanSetting("autoscroll-from-editor", true);
     private BooleanSetting autoscrollToEditor   = new BooleanSetting("autoscroll-to-editor", false);
