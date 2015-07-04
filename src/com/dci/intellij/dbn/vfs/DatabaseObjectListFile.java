@@ -25,7 +25,6 @@ import com.intellij.util.ArrayUtilRt;
 
 public class DatabaseObjectListFile<T extends DBObjectList> extends VirtualFile implements DBVirtualFile
 {
-	private static final byte[] EMPTY_BYTE_CONTENT = new byte[0];
 	protected T objectList;
 
 	protected String name;
@@ -92,11 +91,6 @@ public class DatabaseObjectListFile<T extends DBObjectList> extends VirtualFile 
 		objectList = null;
 	}
 
-	/**
-	 * ******************************************************
-	 * VirtualFile                       *
-	 * *******************************************************
-	 */
 	@Override
 	@NotNull
 	@NonNls
@@ -254,7 +248,5 @@ public class DatabaseObjectListFile<T extends DBObjectList> extends VirtualFile 
 	{
 		return null;
 	}
-
-
 }
 
