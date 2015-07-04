@@ -21,6 +21,7 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.util.UserDataHolderBase;
 import com.intellij.openapi.vcs.FileStatus;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDirectory;
@@ -39,7 +40,7 @@ import com.intellij.psi.search.SearchScope;
 import com.intellij.util.IncorrectOperationException;
 import com.intellij.util.LanguageVersionUtil;
 
-public class DBObjectPsiDirectory implements PsiDirectory, Disposable{
+public class DBObjectPsiDirectory extends UserDataHolderBase implements PsiDirectory, Disposable{
     private DBObject object;
 
     public DBObjectPsiDirectory(DBObject object) {
