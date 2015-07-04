@@ -56,11 +56,6 @@ public class DBObjectListPsiDirectory extends LightElement implements PsiDirecto
 		virtualFile = null;
 	}
 
-	/**
-	 * ******************************************************
-	 * PsiElement                       *
-	 * *******************************************************
-	 */
 	@Override
 	@NotNull
 	public String getName()
@@ -143,11 +138,6 @@ public class DBObjectListPsiDirectory extends LightElement implements PsiDirecto
 		return children.toArray(new PsiElement[children.size()]);
 	}
 
-	/**
-	 * ******************************************************
-	 * PsiDirectory                   *
-	 * *******************************************************
-	 */
 	@Override
 	public boolean processChildren(PsiElementProcessor<PsiFileSystemItem> processor)
 	{
@@ -183,14 +173,14 @@ public class DBObjectListPsiDirectory extends LightElement implements PsiDirecto
 	@Override
 	public PsiDirectory[] getSubdirectories()
 	{
-		return new PsiDirectory[0];
+		return PsiDirectory.EMPTY_ARRAY;
 	}
 
 	@NotNull
 	@Override
 	public PsiFile[] getFiles()
 	{
-		return new PsiFile[0];
+		return PsiFile.EMPTY_ARRAY;
 	}
 
 	@Override
