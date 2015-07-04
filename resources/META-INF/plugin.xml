@@ -63,9 +63,6 @@
 			<implementation-class>com.dci.intellij.dbn.browser.DatabaseBrowserManager</implementation-class>
 		</component>
 		<component>
-			<implementation-class>com.dci.intellij.dbn.browser.cache.ProjectBrowserCacheComponent</implementation-class>
-		</component>
-		<component>
 			<implementation-class>com.dci.intellij.dbn.execution.ExecutionManager</implementation-class>
 		</component>
 		<component>
