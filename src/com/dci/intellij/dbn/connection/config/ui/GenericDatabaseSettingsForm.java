@@ -16,6 +16,23 @@
 
 package com.dci.intellij.dbn.connection.config.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Document;
+
 import com.dci.intellij.dbn.common.Icons;
 import com.dci.intellij.dbn.common.event.EventManager;
 import com.dci.intellij.dbn.common.options.ui.ConfigurationEditorForm;
@@ -31,22 +48,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.util.ui.UIUtil;
-
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 
 public class GenericDatabaseSettingsForm extends ConfigurationEditorForm<GenericConnectionDatabaseSettings> implements ConnectionPresentationChangeListener{
     private JButton testButton;
@@ -75,8 +76,8 @@ public class GenericDatabaseSettingsForm extends ConfigurationEditorForm<Generic
         Project project = connectionConfig.getProject();
         temporaryConfig = connectionConfig.clone();
         updateBorderTitleForeground(connectionParametersPanel);
-        resetChanges();
-        updateLibraryTextField();
+		resetChanges();
+		updateLibraryTextField();
 
         registerComponent(activeCheckBox);
         registerComponent(nameTextField);
@@ -258,12 +259,12 @@ public class GenericDatabaseSettingsForm extends ConfigurationEditorForm<Generic
         nameTextField.setText(connectionConfig.getDisplayName());
         descriptionTextField.setText(connectionConfig.getDescription());
         driverLibraryTextField.setText(connectionConfig.getDriverLibrary());
-        driverComboBox.setSelectedItem(connectionConfig.getDriver());
+		populateDriverList(connectionConfig.getDriverLibrary());
+		driverComboBox.setSelectedItem(connectionConfig.getDriver());
         urlTextField.setText(connectionConfig.getDatabaseUrl());
         userTextField.setText(connectionConfig.getUser());
         passwordField.setText(connectionConfig.getPassword());
         osAuthenticationCheckBox.setSelected(connectionConfig.isOsAuthentication());
-        populateDriverList(connectionConfig.getDriverLibrary());
     }
 
     @Override
