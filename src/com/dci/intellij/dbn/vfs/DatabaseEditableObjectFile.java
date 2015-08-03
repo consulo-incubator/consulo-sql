@@ -16,6 +16,13 @@
 
 package com.dci.intellij.dbn.vfs;
 
+import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.dci.intellij.dbn.common.Constants;
 import com.dci.intellij.dbn.common.dispose.DisposeUtil;
 import com.dci.intellij.dbn.common.thread.ConditionalLaterInvocator;
@@ -45,13 +52,6 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.Key;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 public class DatabaseEditableObjectFile extends DatabaseObjectFile<DBSchemaObject> implements FileConnectionMappingProvider {
     public ThreadLocal<Document> FAKE_DOCUMENT = new ThreadLocal<Document>();
@@ -210,7 +210,7 @@ public class DatabaseEditableObjectFile extends DatabaseObjectFile<DBSchemaObjec
 
     @Override
     public <T> T getUserData(@NotNull Key<T> key) {
-        if (key == FileDocumentManagerImpl.DOCUMENT_KEY) {
+        if (key == FileDocumentManagerImpl.HARD_REF_TO_DOCUMENT_KEY) {
             DBContentType mainContentType = getMainContentType();
             boolean isCode = mainContentType == DBContentType.CODE || mainContentType == DBContentType.CODE_BODY;
             if (isCode) {

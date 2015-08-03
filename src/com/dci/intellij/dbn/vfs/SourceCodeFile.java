@@ -18,7 +18,6 @@ package com.dci.intellij.dbn.vfs;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.ref.Reference;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
@@ -200,8 +199,8 @@ public class SourceCodeFile extends DatabaseContentFile implements DatabaseFile,
 
     @Override
     public <T> void putUserData(Key<T> key, T value) {
-        if (key == FileDocumentManagerImpl.DOCUMENT_KEY && (contentType == DBContentType.CODE || contentType == DBContentType.CODE_BODY)) {
-            databaseFile.putUserData(FileDocumentManagerImpl.DOCUMENT_KEY, (Reference<Document>) value);
+        if (key == FileDocumentManagerImpl.HARD_REF_TO_DOCUMENT_KEY && (contentType == DBContentType.CODE || contentType == DBContentType.CODE_BODY)) {
+            databaseFile.putUserData(FileDocumentManagerImpl.HARD_REF_TO_DOCUMENT_KEY, (Document) value);
         }
         super.putUserData(key, value);
     }

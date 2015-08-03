@@ -16,6 +16,11 @@
 
 package com.dci.intellij.dbn.common.environment;
 
+import java.util.Set;
+
+import org.jdom.Element;
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
 import com.dci.intellij.dbn.common.AbstractProjectComponent;
 import com.dci.intellij.dbn.common.environment.options.EnvironmentSettings;
 import com.dci.intellij.dbn.common.event.EventManager;
@@ -24,6 +29,7 @@ import com.dci.intellij.dbn.editor.DBEditorTabColorProvider;
 import com.dci.intellij.dbn.options.general.GeneralProjectSettings;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileEditor.impl.EditorWindow;
 import com.intellij.openapi.fileEditor.impl.EditorsSplitters;
 import com.intellij.openapi.fileEditor.impl.FileEditorManagerImpl;
 import com.intellij.openapi.project.Project;
@@ -31,11 +37,6 @@ import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.JDOMExternalizable;
 import com.intellij.openapi.util.WriteExternalException;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jdom.Element;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Set;
 
 public class EnvironmentManager extends AbstractProjectComponent implements JDOMExternalizable, Disposable, EnvironmentChangeListener {
     private EnvironmentManager(Project project) {
@@ -47,13 +48,13 @@ public class EnvironmentManager extends AbstractProjectComponent implements JDOM
     public static EnvironmentManager getInstance(Project project) {
         return project.getComponent(EnvironmentManager.class);
     }
-    
+
     @NonNls
     @NotNull
     public String getComponentName() {
         return "DBNavigator.Project.EnvironmentManager";
     }
-    
+
     @Override
     public void environmentConfigChanged(String environmentTypeId) {
         FileEditorManagerImpl fileEditorManager = (FileEditorManagerImpl) FileEditorManager.getInstance(getProject());
@@ -63,7 +64,7 @@ public class EnvironmentManager extends AbstractProjectComponent implements JDOM
             ConnectionHandler connectionHandler = DBEditorTabColorProvider.getConnectionHandler(virtualFile, getProject());
             if (connectionHandler != null && connectionHandler.getSettings().getDetailSettings().getEnvironmentTypeId().equals(environmentTypeId)) {
                 for (EditorsSplitters splitter : splitters) {
-                    splitter.updateFileBackgroundColor(virtualFile);
+					updateFileBackgroundColor(splitter, virtualFile);
                 }
             }
         }
@@ -76,10 +77,17 @@ public class EnvironmentManager extends AbstractProjectComponent implements JDOM
         Set<EditorsSplitters> splitters = fileEditorManager.getAllSplitters();
         for (VirtualFile virtualFile : openFiles) {
             for (EditorsSplitters splitter : splitters) {
-                splitter.updateFileBackgroundColor(virtualFile);
+				updateFileBackgroundColor(splitter, virtualFile);
             }
         }
     }
+
+	private static void updateFileBackgroundColor(@NotNull EditorsSplitters editorsSplitters, @NotNull VirtualFile file) {
+		final EditorWindow[] windows = editorsSplitters.getWindows();
+		for (int i = 0; i != windows.length; ++ i) {
+			windows [i].updateFileBackgroundColor(file);
+		}
+	}
 
     /****************************************
     *            JDOMExternalizable         *

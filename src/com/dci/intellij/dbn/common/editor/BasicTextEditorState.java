@@ -124,7 +124,6 @@ public class BasicTextEditorState implements FileEditorState {
             int selectionEnd = Math.min(this.selectionEnd, document.getTextLength());
             selectionModel.setSelection(selectionStart, selectionEnd);
         }
-        ((EditorEx) editor).stopOptimizedScrolling();
         editor.getScrollingModel().scrollToCaret(ScrollType.RELATIVE);
 
 
