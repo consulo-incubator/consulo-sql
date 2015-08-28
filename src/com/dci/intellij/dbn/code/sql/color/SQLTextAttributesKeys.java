@@ -16,50 +16,43 @@
 
 package com.dci.intellij.dbn.code.sql.color;
 
-import java.awt.Color;
-
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.HighlighterColors;
-import com.intellij.openapi.editor.SyntaxHighlighterColors;
-import com.intellij.openapi.editor.colors.CodeInsightColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.TextAttributes;
-import com.intellij.ui.SimpleTextAttributes;
 
 public interface SQLTextAttributesKeys
 {
 	TextAttributesKey LINE_COMMENT = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL" +
-			".LineComment", SyntaxHighlighterColors.LINE_COMMENT.getDefaultAttributes());
+			".LineComment", DefaultLanguageHighlighterColors.LINE_COMMENT);
 	TextAttributesKey BLOCK_COMMENT = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL" +
-			".BlockComment", SyntaxHighlighterColors.DOC_COMMENT.getDefaultAttributes());
+			".BlockComment", DefaultLanguageHighlighterColors.DOC_COMMENT);
 	TextAttributesKey STRING = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL.String",
-			SyntaxHighlighterColors.STRING.getDefaultAttributes());
+			DefaultLanguageHighlighterColors.STRING);
 	TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL.Number",
-			SyntaxHighlighterColors.NUMBER.getDefaultAttributes());
+			DefaultLanguageHighlighterColors.NUMBER);
 	TextAttributesKey DATA_TYPE = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL.DataType",
-			SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
+			DefaultLanguageHighlighterColors.KEYWORD);
 	TextAttributesKey ALIAS = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL.Alias",
-			HighlighterColors.TEXT.getDefaultAttributes());
+			HighlighterColors.TEXT);
 	TextAttributesKey IDENTIFIER = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL" +
-			".Identifier", HighlighterColors.TEXT.getDefaultAttributes());
+			".Identifier", HighlighterColors.TEXT);
 	TextAttributesKey QUOTED_IDENTIFIER = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL" +
-			".QuotedIdentifier", HighlighterColors.TEXT.getDefaultAttributes());
+			".QuotedIdentifier", HighlighterColors.TEXT);
 	TextAttributesKey KEYWORD = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL.Keyword",
-			SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
+			DefaultLanguageHighlighterColors.KEYWORD);
 	TextAttributesKey FUNCTION = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL.Function",
-			SimpleTextAttributes.REGULAR_BOLD_ATTRIBUTES.toTextAttributes());
+			DefaultLanguageHighlighterColors.INSTANCE_METHOD);
 	TextAttributesKey PARAMETER = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL" +
-			".Parameter", SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
+			".Parameter", DefaultLanguageHighlighterColors.KEYWORD);
 	TextAttributesKey OPERATOR = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL.Operator",
-			SyntaxHighlighterColors.OPERATION_SIGN.getDefaultAttributes());
+			DefaultLanguageHighlighterColors.OPERATION_SIGN);
 	TextAttributesKey PARENTHESIS = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL" +
-			".Parenthesis", SyntaxHighlighterColors.PARENTHS.getDefaultAttributes());
+			".Parenthesis", DefaultLanguageHighlighterColors.PARENTHESES);
 	TextAttributesKey BRACKET = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL.Brackets",
-			SyntaxHighlighterColors.BRACKETS.getDefaultAttributes());
-	TextAttributesKey UNKNOWN_IDENTIFIER = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL" +
-			".UnknownIdentifier", new TextAttributes(Color.RED, null, null, null, 0));
+			DefaultLanguageHighlighterColors.BRACKETS);
 	TextAttributesKey CHAMELEON = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL" +
 			".Chameleon", new TextAttributes(null, null, null, null, 0));
 	TextAttributesKey VARIABLE = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.SQL.Variable",
-			CodeInsightColors.INSTANCE_FIELD_ATTRIBUTES.getDefaultAttributes());
-	TextAttributesKey BAD_CHARACTER = HighlighterColors.BAD_CHARACTER;
+			DefaultLanguageHighlighterColors.INSTANCE_FIELD);
 }

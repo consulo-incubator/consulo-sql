@@ -24,6 +24,7 @@ import com.dci.intellij.dbn.language.common.psi.ChameleonPsiElement;
 import com.dci.intellij.dbn.language.common.psi.ExecutablePsiElement;
 import com.dci.intellij.dbn.language.common.psi.IdentifierPsiElement;
 import com.dci.intellij.dbn.language.common.psi.NamedPsiElement;
+import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -69,7 +70,7 @@ public class SQLLanguageAnnotator implements Annotator {
     private void annotateAliasRef(IdentifierPsiElement aliasReference, AnnotationHolder holder) {
         if (aliasReference.resolve() == null) {
             Annotation annotation = holder.createWarningAnnotation(aliasReference, "Unknown identifier");
-            annotation.setTextAttributes(SQLTextAttributesKeys.UNKNOWN_IDENTIFIER);
+            annotation.setHighlightType(ProblemHighlightType.ERROR);
         } else {
             Annotation annotation = holder.createInfoAnnotation(aliasReference, null);
             annotation.setTextAttributes(SQLTextAttributesKeys.ALIAS);
@@ -94,7 +95,7 @@ public class SQLLanguageAnnotator implements Annotator {
             if (!objectReference.isDefinition()) {
                 Annotation annotation = holder.createWarningAnnotation(objectReference.getNode(),
                         "Unknown identifier");
-                annotation.setTextAttributes(SQLTextAttributesKeys.UNKNOWN_IDENTIFIER);
+				annotation.setHighlightType(ProblemHighlightType.ERROR);
             }
         }
     }
