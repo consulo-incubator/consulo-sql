@@ -16,41 +16,40 @@
 
 package com.dci.intellij.dbn.code.psql.color;
 
-import com.intellij.openapi.editor.HighlighterColors;
-import com.intellij.openapi.editor.SyntaxHighlighterColors;
+import com.dci.intellij.dbn.language.psql.PSQLLanguage;
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.ui.SimpleTextAttributes;
 
 public interface PSQLTextAttributesKeys
 {
-	TextAttributesKey LINE_COMMENT = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL" +
-			".LineComment", SyntaxHighlighterColors.LINE_COMMENT.getDefaultAttributes());
-	TextAttributesKey BLOCK_COMMENT = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL" +
-			".BlockComment", SyntaxHighlighterColors.DOC_COMMENT.getDefaultAttributes());
-	TextAttributesKey STRING = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL.String",
-			SyntaxHighlighterColors.STRING.getDefaultAttributes());
-	TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL.Number",
-			SyntaxHighlighterColors.NUMBER.getDefaultAttributes());
-	TextAttributesKey DATA_TYPE = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL" +
-			".DataType", SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
-	TextAttributesKey ALIAS = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL.Alias",
-			HighlighterColors.TEXT.getDefaultAttributes());
-	TextAttributesKey IDENTIFIER = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL" +
-			".Identifier", HighlighterColors.TEXT.getDefaultAttributes());
-	TextAttributesKey QUOTED_IDENTIFIER = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL" +
-			".QuotedIdentifier", HighlighterColors.TEXT.getDefaultAttributes());
-	TextAttributesKey KEYWORD = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL.Keyword",
-			SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
-	TextAttributesKey FUNCTION = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL.Function",
-			SimpleTextAttributes.REGULAR_BOLD_ATTRIBUTES.toTextAttributes());
-	TextAttributesKey PARAMETER = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL" +
-			".Parameter", SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
-	TextAttributesKey EXCEPTION = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL" +
-			".Exception", SyntaxHighlighterColors.KEYWORD.getDefaultAttributes());
-	TextAttributesKey OPERATOR = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL.Operator",
-			SyntaxHighlighterColors.OPERATION_SIGN.getDefaultAttributes());
-	TextAttributesKey PARENTHESIS = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL" +
-			".Parenthesis", SyntaxHighlighterColors.PARENTHS.getDefaultAttributes());
-	TextAttributesKey BRACKET = TextAttributesKey.createTextAttributesKey("DBNavigator.TextAttributes.PSQL.Brackets",
-			SyntaxHighlighterColors.BRACKETS.getDefaultAttributes());
+	TextAttributesKey LINE_COMMENT = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.LINE_COMMENT);
+	TextAttributesKey BLOCK_COMMENT = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.BLOCK_COMMENT);
+	TextAttributesKey STRING = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.STRING);
+	TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.NUMBER);
+	TextAttributesKey DATA_TYPE = TextAttributesKey.createTextAttributesKey("PSQL_DATA_TYPE",
+			DefaultLanguageHighlighterColors.KEYWORD);
+	TextAttributesKey ALIAS = TextAttributesKey.createTextAttributesKey("PSQL_ALIAS",
+			DefaultLanguageHighlighterColors.IDENTIFIER);
+	TextAttributesKey IDENTIFIER = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.IDENTIFIER);
+	TextAttributesKey QUOTED_IDENTIFIER = TextAttributesKey.createTextAttributesKey("PSQL_QUOTED_IDENTIFIER",
+			IDENTIFIER);
+	TextAttributesKey KEYWORD = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.KEYWORD);
+	TextAttributesKey FUNCTION = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.INSTANCE_METHOD);
+	TextAttributesKey PARAMETER = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.PARAMETER);
+	TextAttributesKey EXCEPTION = TextAttributesKey.createTextAttributesKey("PSQL_EXCEPTION",
+			DefaultLanguageHighlighterColors.KEYWORD);
+	TextAttributesKey OPERATOR = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.OPERATION_SIGN);
+	TextAttributesKey PARENTHESIS = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.PARENTHESES);
+	TextAttributesKey BRACKET = TextAttributesKey.createTextAttributesKey(PSQLLanguage.INSTANCE,
+			DefaultLanguageHighlighterColors.BRACKETS);
 }
