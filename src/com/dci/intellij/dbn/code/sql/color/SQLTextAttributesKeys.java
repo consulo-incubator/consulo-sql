@@ -27,7 +27,7 @@ public interface SQLTextAttributesKeys
 	TextAttributesKey LINE_COMMENT = TextAttributesKey.createTextAttributesKey(SQLLanguage.INSTANCE,
 			DefaultLanguageHighlighterColors.LINE_COMMENT);
 	TextAttributesKey BLOCK_COMMENT = TextAttributesKey.createTextAttributesKey(SQLLanguage.INSTANCE,
-			DefaultLanguageHighlighterColors.DOC_COMMENT);
+			DefaultLanguageHighlighterColors.BLOCK_COMMENT);
 	TextAttributesKey STRING = TextAttributesKey.createTextAttributesKey(SQLLanguage.INSTANCE,
 			DefaultLanguageHighlighterColors.STRING);
 	TextAttributesKey NUMBER = TextAttributesKey.createTextAttributesKey(SQLLanguage.INSTANCE,
