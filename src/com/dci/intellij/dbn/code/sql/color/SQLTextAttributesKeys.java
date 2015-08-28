@@ -38,7 +38,7 @@ public interface SQLTextAttributesKeys
 	TextAttributesKey IDENTIFIER = TextAttributesKey.createTextAttributesKey(SQLLanguage.INSTANCE,
 			DefaultLanguageHighlighterColors.IDENTIFIER);
 	TextAttributesKey QUOTED_IDENTIFIER = TextAttributesKey.createTextAttributesKey("SQL_QUOTED_IDENTIFIER",
-			HighlighterColors.TEXT);
+			IDENTIFIER);
 	TextAttributesKey KEYWORD = TextAttributesKey.createTextAttributesKey(SQLLanguage.INSTANCE,
 			DefaultLanguageHighlighterColors.KEYWORD);
 	TextAttributesKey FUNCTION = TextAttributesKey.createTextAttributesKey(SQLLanguage.INSTANCE,
