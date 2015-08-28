@@ -36,6 +36,7 @@ import com.dci.intellij.dbn.language.common.psi.IdentifierPsiElement;
 import com.dci.intellij.dbn.language.common.psi.NamedPsiElement;
 import com.dci.intellij.dbn.object.common.DBObjectType;
 import com.dci.intellij.dbn.object.common.DBSchemaObject;
+import com.intellij.codeInspection.ProblemHighlightType;
 import com.intellij.lang.annotation.Annotation;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
@@ -92,7 +93,7 @@ public class PSQLLanguageAnnotator implements Annotator {
     private void annotateAliasRef(IdentifierPsiElement aliasReference, AnnotationHolder holder) {
         if (aliasReference.resolve() == null) {
             Annotation annotation = holder.createWarningAnnotation(aliasReference, "Unknown identifier");
-            annotation.setTextAttributes(PSQLTextAttributesKeys.UNKNOWN_IDENTIFIER);
+            annotation.setHighlightType(ProblemHighlightType.ERROR);
         } else {
             Annotation annotation = holder.createInfoAnnotation(aliasReference, null);
             annotation.setTextAttributes(PSQLTextAttributesKeys.DATA_TYPE);
