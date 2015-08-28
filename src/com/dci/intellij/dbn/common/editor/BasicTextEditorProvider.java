@@ -25,7 +25,6 @@ import com.dci.intellij.dbn.common.util.DocumentUtil;
 import com.dci.intellij.dbn.common.util.EditorUtil;
 import com.dci.intellij.dbn.vfs.DatabaseEditableObjectFile;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileEditorProvider;
 import com.intellij.openapi.fileEditor.FileEditorState;
@@ -34,7 +33,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Computable;
 import com.intellij.openapi.vfs.VirtualFile;
 
-public abstract class BasicTextEditorProvider implements FileEditorProvider, ApplicationComponent, DumbAware
+public abstract class BasicTextEditorProvider implements FileEditorProvider, DumbAware
 {
 	@Override
 	@NotNull
@@ -77,21 +76,5 @@ public abstract class BasicTextEditorProvider implements FileEditorProvider, App
 				EditorUtil.setEditorIcon(databaseFile, textEditor, icon);
 			}
 		}.start();
-	}
-
-	/**
-	 * ******************************************************
-	 * ApplicationComponent                   *
-	 * *******************************************************
-	 */
-	@Override
-	public void initComponent()
-	{
-	}
-
-	@Override
-	public void disposeComponent()
-	{
-
 	}
 }

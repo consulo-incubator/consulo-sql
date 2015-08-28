@@ -102,19 +102,4 @@ public class SQLConsoleEditorProvider extends BasicTextEditorProvider
 	{
 		return "SQLConsole";
 	}
-
-	/**
-	 * ******************************************************
-	 * ApplicationComponent                   *
-	 * *******************************************************
-	 */
-
-	@Override
-	@NonNls
-	@NotNull
-	public String getComponentName()
-	{
-		return "DBNavigator.SQLConsoleEditorProvider";
-	}
-
 }
