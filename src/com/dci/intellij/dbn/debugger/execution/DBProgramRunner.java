@@ -244,15 +244,10 @@ public class DBProgramRunner extends GenericProgramRunner {
 
                 if (continueExecution) {
 
-                    RunContentDescriptor reuseContent = ExecutionManager.getInstance(project).getContentManager().getReuseContent(environment);
                     DBProgramDebugProcessStarter debugProcessStarter = new DBProgramDebugProcessStarter(connectionHandler);
                     XDebugSession session = null;
                     try {
-                        session = XDebuggerManager.getInstance(project).startSession(
-                                DBProgramRunner.this,
-                                environment,
-                                reuseContent,
-                                debugProcessStarter);
+                        session = XDebuggerManager.getInstance(project).startSession(environment, debugProcessStarter);
 
                         RunContentDescriptor descriptor = session.getRunContentDescriptor();
 
