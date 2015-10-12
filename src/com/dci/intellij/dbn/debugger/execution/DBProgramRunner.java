@@ -37,7 +37,6 @@ import com.intellij.execution.ExecutionException;
 import com.intellij.execution.ExecutionManager;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.RunProfile;
-import com.intellij.execution.configurations.RunProfileState;
 import com.intellij.execution.executors.DefaultDebugExecutor;
 import com.intellij.execution.process.ProcessHandler;
 import com.intellij.execution.runners.ExecutionEnvironment;
@@ -51,229 +50,233 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.xdebugger.XDebugSession;
 import com.intellij.xdebugger.XDebuggerManager;
 
-public class DBProgramRunner extends GenericProgramRunner {
-    public static final String RUNNER_ID = "DBNavigatorProgramRunner";
+public class DBProgramRunner extends GenericProgramRunner
+{
+	public static final String RUNNER_ID = "DBNavigatorProgramRunner";
 
-    @NotNull
-    public String getRunnerId() {
-        return RUNNER_ID;
-    }
+	@Override
+	@NotNull
+	public String getRunnerId()
+	{
+		return RUNNER_ID;
+	}
 
-    public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile) {
-        if (profile instanceof DBProgramRunConfiguration) {
-            DBProgramRunConfiguration runConfiguration = (DBProgramRunConfiguration) profile;
-            return DefaultDebugExecutor.EXECUTOR_ID.equals(executorId) && runConfiguration.getMethod() != null;
-        }
-        return false;
-    }
+	@Override
+	public boolean canRun(@NotNull String executorId, @NotNull RunProfile profile)
+	{
+		if(profile instanceof DBProgramRunConfiguration)
+		{
+			DBProgramRunConfiguration runConfiguration = (DBProgramRunConfiguration) profile;
+			return DefaultDebugExecutor.EXECUTOR_ID.equals(executorId) && runConfiguration.getMethod() != null;
+		}
+		return false;
+	}
 
 	@Override
 	public void execute(@NotNull final ExecutionEnvironment env, @Nullable final Callback callback) throws ExecutionException
 	{
 		final DBProgramRunConfiguration runProfile = (DBProgramRunConfiguration) env.getRunProfile();
 
-		new BackgroundTask(runProfile.getProject(), "Checking debug privileges", false, true) {
-			public void execute(@NotNull ProgressIndicator progressIndicator) {
+		new BackgroundTask(runProfile.getProject(), "Checking debug privileges", false, true)
+		{
+			@Override
+			public void execute(@NotNull ProgressIndicator progressIndicator)
+			{
 				initProgressIndicator(progressIndicator, true);
-				performPrivilegeCheck(
-						runProfile.getExecutionInput(),
-						env.getExecutor(),
-						env,
-						callback);
+				performPrivilegeCheck(runProfile.getExecutionInput(), env.getExecutor(), env, callback);
 
 			}
 		}.start();
 	}
 
 
-    private void performPrivilegeCheck(
-            final MethodExecutionInput executionInput,
-            final Executor executor,
-            final ExecutionEnvironment environment,
-            final Callback callback) {
-        final DBProgramRunConfiguration runProfile = (DBProgramRunConfiguration) environment.getRunProfile();
-        final ConnectionHandler connectionHandler = runProfile.getMethod().getConnectionHandler();
-        Project project = connectionHandler.getProject();
-
-        DatabaseDebuggerManager debuggerManager = DatabaseDebuggerManager.getInstance(project);
-        final List<String> missingPrivileges = debuggerManager.getMissingDebugPrivileges(connectionHandler);
-        if (missingPrivileges.size() > 0) {
-            new SimpleLaterInvocator() {
-                public void run() {
-                    StringBuilder buffer = new StringBuilder();
-                    buffer.append("The current user (").append(connectionHandler.getUserName()).append(") does not have sufficient privileges to perform debug operations on this database.\n");
-                    buffer.append("Please contact your administrator to grant the required privileges. ");
-                    buffer.append("Missing privileges:\n");
-                    for (String missingPrivilege : missingPrivileges) {
-                        buffer.append(" - ").append(missingPrivilege).append("\n");
-                    }
-
-                    int response = Messages.showDialog(
-                                    buffer.toString(),
-                                    Constants.DBN_TITLE_PREFIX + "Insufficient privileges",
-                                    new String[]{"Continue anyway", "Cancel"}, 0,
-                                    Messages.getWarningIcon());
-                    if (response == 0) {
-                        performInitialize(
-                                executionInput,
-                                executor,
-                                environment,
-                                callback);
-                    }
-                }
-            }.start();
-        } else {
-            performInitialize(
-                    executionInput,
-                    executor,
-                    environment,
-                    callback);
-        }
-    }
-
-    private void performInitialize(
-            final MethodExecutionInput executionInput,
-            final Executor executor,
-            final ExecutionEnvironment environment,
-            final Callback callback) {
-        final DBProgramRunConfiguration runProfile = (DBProgramRunConfiguration) environment.getRunProfile();
-        if (runProfile.isCompileDependencies()) {
-            final ConnectionHandler connectionHandler = runProfile.getMethod().getConnectionHandler();
-            final Project project = connectionHandler.getProject();
-
-
-            new BackgroundTask(project, "Initializing debug environment", false, true) {
-                public void execute(@NotNull ProgressIndicator progressIndicator) {
-                    DatabaseDebuggerManager debuggerManager = DatabaseDebuggerManager.getInstance(project);
-                    initProgressIndicator(progressIndicator, true, "Loading dependencies of " + runProfile.getMethod().getQualifiedNameWithType());
-                    if (!project.isDisposed() && !progressIndicator.isCanceled()) {
-
-                        DBMethod method = executionInput.getMethod();
-                        List<DBSchemaObject> dependencies = debuggerManager.loadCompileDependencies(method, progressIndicator);
-                        if (!progressIndicator.isCanceled()) {
-                            if (dependencies.size() > 0) {
-                                performCompile(
-                                        executionInput,
-                                        executor,
-                                        environment,
-                                        callback,
-                                        dependencies);
-                            } else {
-                                performExecution(
-                                        executionInput,
-                                        executor,
-                                        environment,
-                                        callback);
-                            }
-                        }
-                    }
-                }
-            }.start();
-        } else {
-            performExecution(
-                    executionInput,
-                    executor,
-                    environment,
-                    callback);
-        }
-
-    }
-
-    private void performCompile(
-            final MethodExecutionInput executionInput,
-            final Executor executor,
-            final ExecutionEnvironment environment,
-            final Callback callback,
-            final List<DBSchemaObject> dependencies) {
-
-        new SimpleLaterInvocator() {
-            public void run() {
-                final Project project = executionInput.getProject();
-                DBProgramRunConfiguration runConfiguration = (DBProgramRunConfiguration) environment.getRunProfile();
-                CompileDebugDependenciesDialog dependenciesDialog = new CompileDebugDependenciesDialog(runConfiguration, dependencies);
-                dependenciesDialog.show();
-                final List<DBSchemaObject> selectedDependencies =  dependenciesDialog.getSelection();
-
-                if (dependenciesDialog.getExitCode() == DialogWrapper.OK_EXIT_CODE){
-                    if (selectedDependencies.size() > 0) {
-                        new BackgroundTask(project, "Compiling dependencies", false, true){
-                            @Override
-                            public void execute(@NotNull ProgressIndicator progressIndicator) {
-                                initProgressIndicator(progressIndicator, true);
-                                DatabaseCompilerManager compilerManager = DatabaseCompilerManager.getInstance(project);
-                                for (DBSchemaObject schemaObject : selectedDependencies) {
-                                    if (!progressIndicator.isCanceled()) {
-                                        progressIndicator.setText("Compiling " + schemaObject.getQualifiedNameWithType());
-                                        compilerManager.compileObject(schemaObject, CompileType.DEBUG, true);
-                                    }
-                                }
-                                executionInput.getConnectionHandler().getObjectBundle().refreshObjectsStatus();
-                                if (!progressIndicator.isCanceled()) {
-                                    performExecution(
-                                            executionInput,
-                                            executor,
-                                            environment,
-                                            callback);
-                                }
-                            }
-                        }.start();
-                    } else {
-                        performExecution(
-                                executionInput,
-                                executor,
-                                environment,
-                                callback);
-                    }
-                }
-            }
-        }.start();
-    }
-
-    private void performExecution(
-            final MethodExecutionInput executionInput,
-            final Executor executor,
-            final ExecutionEnvironment environment,
-            final Callback callback) {
-        new SimpleLaterInvocator() {
-            public void run() {
-                final ConnectionHandler connectionHandler = executionInput.getConnectionHandler();
-                final Project project = connectionHandler.getProject();
-
-                MethodExecutionManager executionManager = MethodExecutionManager.getInstance(project);
-                boolean continueExecution = executionManager.promptExecutionDialog(executionInput, true);
-
-                if (continueExecution) {
-
-                    DBProgramDebugProcessStarter debugProcessStarter = new DBProgramDebugProcessStarter(connectionHandler);
-                    XDebugSession session = null;
-                    try {
-                        session = XDebuggerManager.getInstance(project).startSession(environment, debugProcessStarter);
-
-                        RunContentDescriptor descriptor = session.getRunContentDescriptor();
-
-                        if (callback != null) callback.processStarted(descriptor);
-
-                        if (true /*LocalHistoryConfiguration.getInstance().ADD_LABEL_ON_RUNNING*/) {
-                            RunProfile runProfile = environment.getRunProfile();
-                            LocalHistory.getInstance().putSystemLabel(project, executor.getId() + " " + runProfile.getName());
-                        }
-
-                        ExecutionManager.getInstance(project).getContentManager().showRunContent(executor, descriptor);
-                        ProcessHandler processHandler = descriptor.getProcessHandler();
-                        if (processHandler != null) processHandler.startNotify();
-                    } catch (ExecutionException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
-    }
-
-	@Nullable
-	@Override
-	protected RunContentDescriptor doExecute(Project project, RunProfileState runProfileState, RunContentDescriptor runContentDescriptor, ExecutionEnvironment executionEnvironment) throws ExecutionException
+	private void performPrivilegeCheck(final MethodExecutionInput executionInput, final Executor executor, final ExecutionEnvironment environment, final Callback callback)
 	{
-		return null;
+		final DBProgramRunConfiguration runProfile = (DBProgramRunConfiguration) environment.getRunProfile();
+		final ConnectionHandler connectionHandler = runProfile.getMethod().getConnectionHandler();
+		Project project = connectionHandler.getProject();
+
+		DatabaseDebuggerManager debuggerManager = DatabaseDebuggerManager.getInstance(project);
+		final List<String> missingPrivileges = debuggerManager.getMissingDebugPrivileges(connectionHandler);
+		if(missingPrivileges.size() > 0)
+		{
+			new SimpleLaterInvocator()
+			{
+				@Override
+				public void run()
+				{
+					StringBuilder buffer = new StringBuilder();
+					buffer.append("The current user (").append(connectionHandler.getUserName()).append(") does not have sufficient privileges to perform debug operations on this database.\n");
+					buffer.append("Please contact your administrator to grant the required privileges. ");
+					buffer.append("Missing privileges:\n");
+					for(String missingPrivilege : missingPrivileges)
+					{
+						buffer.append(" - ").append(missingPrivilege).append("\n");
+					}
+
+					int response = Messages.showDialog(buffer.toString(), Constants.DBN_TITLE_PREFIX + "Insufficient privileges", new String[]{
+							"Continue anyway",
+							"Cancel"
+					}, 0, Messages.getWarningIcon());
+					if(response == 0)
+					{
+						performInitialize(executionInput, executor, environment, callback);
+					}
+				}
+			}.start();
+		}
+		else
+		{
+			performInitialize(executionInput, executor, environment, callback);
+		}
+	}
+
+	private void performInitialize(final MethodExecutionInput executionInput, final Executor executor, final ExecutionEnvironment environment, final Callback callback)
+	{
+		final DBProgramRunConfiguration runProfile = (DBProgramRunConfiguration) environment.getRunProfile();
+		if(runProfile.isCompileDependencies())
+		{
+			final ConnectionHandler connectionHandler = runProfile.getMethod().getConnectionHandler();
+			final Project project = connectionHandler.getProject();
+
+
+			new BackgroundTask(project, "Initializing debug environment", false, true)
+			{
+				@Override
+				public void execute(@NotNull ProgressIndicator progressIndicator)
+				{
+					DatabaseDebuggerManager debuggerManager = DatabaseDebuggerManager.getInstance(project);
+					initProgressIndicator(progressIndicator, true, "Loading dependencies of " + runProfile.getMethod().getQualifiedNameWithType());
+					if(!project.isDisposed() && !progressIndicator.isCanceled())
+					{
+
+						DBMethod method = executionInput.getMethod();
+						List<DBSchemaObject> dependencies = debuggerManager.loadCompileDependencies(method, progressIndicator);
+						if(!progressIndicator.isCanceled())
+						{
+							if(dependencies.size() > 0)
+							{
+								performCompile(executionInput, executor, environment, callback, dependencies);
+							}
+							else
+							{
+								performExecution(executionInput, executor, environment, callback);
+							}
+						}
+					}
+				}
+			}.start();
+		}
+		else
+		{
+			performExecution(executionInput, executor, environment, callback);
+		}
+
+	}
+
+	private void performCompile(final MethodExecutionInput executionInput,
+			final Executor executor,
+			final ExecutionEnvironment environment,
+			final Callback callback,
+			final List<DBSchemaObject> dependencies)
+	{
+
+		new SimpleLaterInvocator()
+		{
+			@Override
+			public void run()
+			{
+				final Project project = executionInput.getProject();
+				DBProgramRunConfiguration runConfiguration = (DBProgramRunConfiguration) environment.getRunProfile();
+				CompileDebugDependenciesDialog dependenciesDialog = new CompileDebugDependenciesDialog(runConfiguration, dependencies);
+				dependenciesDialog.show();
+				final List<DBSchemaObject> selectedDependencies = dependenciesDialog.getSelection();
+
+				if(dependenciesDialog.getExitCode() == DialogWrapper.OK_EXIT_CODE)
+				{
+					if(selectedDependencies.size() > 0)
+					{
+						new BackgroundTask(project, "Compiling dependencies", false, true)
+						{
+							@Override
+							public void execute(@NotNull ProgressIndicator progressIndicator)
+							{
+								initProgressIndicator(progressIndicator, true);
+								DatabaseCompilerManager compilerManager = DatabaseCompilerManager.getInstance(project);
+								for(DBSchemaObject schemaObject : selectedDependencies)
+								{
+									if(!progressIndicator.isCanceled())
+									{
+										progressIndicator.setText("Compiling " + schemaObject.getQualifiedNameWithType());
+										compilerManager.compileObject(schemaObject, CompileType.DEBUG, true);
+									}
+								}
+								executionInput.getConnectionHandler().getObjectBundle().refreshObjectsStatus();
+								if(!progressIndicator.isCanceled())
+								{
+									performExecution(executionInput, executor, environment, callback);
+								}
+							}
+						}.start();
+					}
+					else
+					{
+						performExecution(executionInput, executor, environment, callback);
+					}
+				}
+			}
+		}.start();
+	}
+
+	private void performExecution(final MethodExecutionInput executionInput, final Executor executor, final ExecutionEnvironment environment, final Callback callback)
+	{
+		new SimpleLaterInvocator()
+		{
+			@Override
+			public void run()
+			{
+				final ConnectionHandler connectionHandler = executionInput.getConnectionHandler();
+				final Project project = connectionHandler.getProject();
+
+				MethodExecutionManager executionManager = MethodExecutionManager.getInstance(project);
+				boolean continueExecution = executionManager.promptExecutionDialog(executionInput, true);
+
+				if(continueExecution)
+				{
+
+					DBProgramDebugProcessStarter debugProcessStarter = new DBProgramDebugProcessStarter(connectionHandler);
+					XDebugSession session = null;
+					try
+					{
+						session = XDebuggerManager.getInstance(project).startSession(environment, debugProcessStarter);
+
+						RunContentDescriptor descriptor = session.getRunContentDescriptor();
+
+						if(callback != null)
+						{
+							callback.processStarted(descriptor);
+						}
+
+						if(true /*LocalHistoryConfiguration.getInstance().ADD_LABEL_ON_RUNNING*/)
+						{
+							RunProfile runProfile = environment.getRunProfile();
+							LocalHistory.getInstance().putSystemLabel(project, executor.getId() + " " + runProfile.getName());
+						}
+
+						ExecutionManager.getInstance(project).getContentManager().showRunContent(executor, descriptor);
+						ProcessHandler processHandler = descriptor.getProcessHandler();
+						if(processHandler != null)
+						{
+							processHandler.startNotify();
+						}
+					}
+					catch(ExecutionException e)
+					{
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
 	}
 }
 
